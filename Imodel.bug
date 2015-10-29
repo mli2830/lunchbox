@@ -19,7 +19,7 @@ model{
     ## aux variables
     
     ## priors
-    beta ~ dgamma(3,1)
+    beta ~ dgamma(0.5,1)
     gamma ~ dgamma(2,1)
     report ~ dbeta(1,1)
 
