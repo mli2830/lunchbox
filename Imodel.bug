@@ -1,26 +1,28 @@
 model{
   ## Initial values
     I[1] <- i0
+    S[1] <- s0
     Pr <- 1 - exp(-gamma*dt)
-    Pi[1] <- 1 - exp(-beta*I[1]*dt/pop)
+    Pi[1] <- 1 - exp(-beta*I[1]*S[1]*dt/pop)
     o[1] ~ dbin(report,I[1])
-    inf[1] ~ dbin(Pi[1],pop-I[1])
+    inf[1] ~ dbin(Pi[1],S[1])
     rec[1] ~ dbin(Pr,I[1])
     
     ## Step through observations
     for (t in 2:M) {
+        S[t] <- S[t-1] - inf[t-1]
         I[t] <- I[t-1] - rec[t-1] + inf[t-1]
         
-        Pi[t] <- 1 - exp(-beta*I[t]*dt/pop)
-        inf[t] ~ dbin(Pi[t],pop-I[t])
+        Pi[t] <- 1 - exp(-beta*S[t]*I[t]*dt/pop)
+        inf[t] ~ dbin(Pi[t],S[t])
         rec[t] ~ dbin(Pr,I[t])
         o[t] ~ dbin(report,I[t])
     }
     ## aux variables
     
     ## priors
-    beta ~ dgamma(0.5,1)
-    gamma ~ dgamma(2,1)
-    report ~ dbeta(1,1)
+    beta ~ dgamma(3,1)
+    gamma ~ dunif(0,5)
+    report ~ dunif(0,5)
 
 }
