@@ -1,9 +1,9 @@
 model{
   ## Initial values
     I[1] <- i0
-    S[1] <- s0
+    S[1] <- pop - i0
     Pr <- 1 - exp(-gamma*dt)
-    Pi[1] <- 1 - exp(-beta*I[1]*S[1]*dt/pop)
+    Pi[1] <- 1 - exp(-beta*I[1]*S[1]/(pop))
     o[1] ~ dbin(report,I[1])
     inf[1] ~ dbin(Pi[1],S[1])
     rec[1] ~ dbin(Pr,I[1])
@@ -13,7 +13,7 @@ model{
         S[t] <- S[t-1] - inf[t-1]
         I[t] <- I[t-1] - rec[t-1] + inf[t-1]
         
-        Pi[t] <- 1 - exp(-beta*S[t]*I[t]*dt/pop)
+        Pi[t] <- 1 - exp(-beta*I[t]*S[t]/(pop))
         inf[t] ~ dbin(Pi[t],S[t])
         rec[t] ~ dbin(Pr,I[t])
         o[t] ~ dbin(report,I[t])
@@ -21,8 +21,8 @@ model{
     ## aux variables
     
     ## priors
-    beta ~ dgamma(3,1)
-    gamma ~ dunif(0,5)
-    report ~ dunif(0,5)
+    beta ~ dunif(0,2)
+    gamma ~ dunif(0,2)
+    report ~ dunif(0,1)
 
 }
