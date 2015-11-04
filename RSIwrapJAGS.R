@@ -3,8 +3,7 @@ library(mcmcplots)
 library(lattice)
 library(coda)
 
-source('SIsimulator.R')
-
+source("SIsimulator.R")
 sirdat <- simSI(beta=0.05,i0=1,s0 = 100,t0 = 2,
                 Pobs=0.5, end = 20, seed=101)
 
