@@ -106,42 +106,9 @@ i0=2
 epi=0.01
 I<- obs + 0.02
 
-mcode <-
-  "data {
-int<lower=0> N; // number of data points
-real obs[N]; // response
-real I[N];
-int pop;
-int i0;
-real epi;
-}
-parameters {
-// need to put upper/lower bounds on parameters
-//  ... otherwise chain wanders off to outer space
-real <lower=0.01,upper=0.2> beta;
-real <lower=0.1,upper=0.99> reporting;
-real <lower=0.1,upper=1> effprop;
-}
-model {
-vector[N] pSI;
-vector[N] S;
-vector[N] shap;
-S[1] <- effprop*pop;
-pSI[1]<- 1 - (1-beta)^i0;
-shap[1] <- pSI[1]*S[1]/(1-pSI[1]+epi);
-I[1] ~ gamma(exp(shap[1]),1/(1-pSI[1]+epi));
-for (t in 2:N) {
-shap[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1]+epi);
-I[t] ~ gamma(exp(shap[t]),1/(1-pSI[t-1]+epi));
-S[t] <- S[t-1] - I[t];
-pSI[t] <- 1.0 - (1.0-beta)^I[t];
-obs[t] ~ gamma(reporting*I[t]/(1.0-reporting+epi),1.0/(1.0-reporting+epi));
-}
-}
-"
 ## all default options: runs
-s1 <- stan(model_code=mcode,data=list(obs=obs,N=N,pop=pop,i0=i0,
-                                      I=I,epi=epi),
+s1 <- stan(file='hybrid.stan',data=list(obs=obs,N=N,pop=pop,i0=i0,
+                                      I=I,epi=epi), init="0",
            pars=c("beta","reporting","effprop"),iter=2000,
            seed=1001,
            chains = 1)
