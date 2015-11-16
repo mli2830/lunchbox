@@ -104,7 +104,7 @@ N = 20
 pop = 100
 i0=2
 epi=0.01
-I<- obs + 1
+I<- obs + 0.02
 
 mcode <-
   "data {
@@ -119,7 +119,7 @@ parameters {
 // need to put upper/lower bounds on parameters
 //  ... otherwise chain wanders off to outer space
 real <lower=0.01,upper=0.2> beta;
-real <lower=0.1,upper=0.9> reporting;
+real <lower=0.1,upper=0.99> reporting;
 real <lower=0.1,upper=1> effprop;
 }
 model {
