@@ -5,7 +5,7 @@ library(nimble)
 
 source("SIsimulator.R")
 
-sim <- simCB(beta=0.02,pop=100,effprop=0.8,i0=2,seed=3)
+sim <- simCB(beta=0.03,pop=100,effprop=0.8,i0=2,seed=3)
 sim
 
 
@@ -17,7 +17,7 @@ data <- list(obs=sim$Iobs,
 
 ##initial values -----
 
-inits <- list(list(I = sim$Iobs+1,
+inits <- list(list(I = sim$Iobs+2,
               effprop=0.8,
               beta = 0.01,
               reporting = 0.8))
@@ -100,7 +100,7 @@ options(mc.cores = parallel::detectCores())
 
 
 obs <- sim$Iobs + 0.01
-I <- sim$Iobs + 1 + 0.01
+I <- sim$Iobs + 1.01
 N = 20
 one <- 1
 i0 = 2
@@ -110,8 +110,8 @@ epi = 0.01
 mcode <-
   "data {
 int<lower=0> N; // number of data points
-real obs[N]; // response
 real I[N];
+real obs[N]; // response
 int pop;
 int i0;
 real epi;
@@ -130,20 +130,20 @@ vector[N] shap;
 S[1] <- effprop*pop;
 pSI[1]<- 1 - (1-beta)^i0;
 shap[1] <- pSI[1]*S[1]/(1-pSI[1]+epi);
-I[1] ~ gamma(shap[1],1/(1-pSI[1]+epi));
-obs[1] ~ gamma(reporting*I[1]/(1.0-reporting+epi),1.0/(1.0-reporting+epi));
+I[1] ~ gamma(exp(shap[1]),1/(1-pSI[1]+epi));
+obs[1] ~ gamma(exp(reporting*I[1]/(1.0-reporting+epi)),1.0/(1.0-reporting+epi));
 for (t in 2:N) {
 shap[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1]+epi);
 I[t] ~ gamma(exp(shap[t]),1/(1-pSI[t-1]+epi));
 S[t] <- S[t-1] - I[t];
 pSI[t] <- 1.0 - (1.0-beta)^I[t];
-obs[t] ~ gamma(reporting*I[t]/(1.0-reporting+epi),1.0/(1.0-reporting+epi));
+obs[t] ~ gamma(exp(reporting*I[t]/(1.0-reporting+epi)),1.0/(1.0-reporting+epi));
 }
 }
 "
 ## all default options: runs
 s1 <- stan(model_code=mcode,data=list(obs=obs,N=N,pop=pop,i0=i0,
                                       I=I,epi=epi),
-           pars=c("beta","reporting","effprop"),iter=2000,
+           pars=c("beta","reporting","effprop"),iter=5000,
            seed=1001,
            chains = 1)
