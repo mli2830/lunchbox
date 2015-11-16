@@ -99,9 +99,12 @@ library("rstan")
 options(mc.cores = parallel::detectCores())
 
 
-obs <- sim$Iobs
+obs <- sim$Iobs + 0.01
 N = 20
-one <- 1
+pop = 100
+i0=2
+epi=0.01
+I<- obs + 1
 
 mcode <-
   "data {
@@ -137,8 +140,8 @@ obs[t] ~ gamma(reporting*I[t]/(1.0-reporting+epi),1.0/(1.0-reporting+epi));
 }
 "
 ## all default options: runs
-s1 <- stan(model_code=mcode,data=list(obs=sim$Iobs,N=N,pop=pop,i0=i0,
-                                      I=sim$I,S=sim$S,R=sim$R,epi=epi),
+s1 <- stan(model_code=mcode,data=list(obs=obs,N=N,pop=pop,i0=i0,
+                                      I=I,epi=epi),
            pars=c("beta","reporting","effprop"),iter=2000,
            seed=1001,
            chains = 1)
