@@ -99,7 +99,7 @@ library("rstan")
 options(mc.cores = parallel::detectCores())
 
 
-obs <- sim$Iobs + 0.01
+obs <- sim$Iobs + 0.02
 N = 20
 pop = 100
 i0=2
