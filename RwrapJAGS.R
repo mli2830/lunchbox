@@ -2,12 +2,13 @@ library(R2jags)
 library(mcmcplots)
 source('Isimulator.R')
 
-sirdat <- simi(beta=0.5,gamma = 1,pop = 50,i0 = 1,t0 = 1,
-               end = 20,dt = 1,report = 0.3, seed=10000)
+sirdat <- simi(beta=0.02,N = 50,i0 = 1,t0 = 1,
+               end = 20, seed=100)
+sirdat
 
-jagsdat <- list(o=sirdat[,4], dt=1,M=nrow(sirdat), i0=1,pop=50)
-parameters <- c("beta","gamma","report")
-inits <- list(list(beta=0.2,gamma=0.3,report=0.4))
+jagsdat <- list(inc=sirdat[,3],n=nrow(sirdat), i0=1,N=50)
+parameters <- c("beta")
+inits <- list(list(beta=0.2))
 
 
 j1 <- jags(data=jagsdat,inits, param=parameters, 
