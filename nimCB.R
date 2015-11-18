@@ -9,8 +9,8 @@ nimcode <- nimbleCode({
   S[1] <- s0
   R[1] <- r0
   pSI[1] <- 1 - (1-beta)^i0 
-  I[1] ~ dbin(pSI[1],S[1])
-  obs[1] ~ dbin(reporting , I[1])
+  I[1] ~ dbin(1,i0)
+  obs[1] ~ dbin(reporting , i0)
   
   for(t in 2:M){
     I[t] ~ dbin(pSI[t-1],S[t-1])
