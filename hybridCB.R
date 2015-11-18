@@ -59,16 +59,17 @@ nimCBdata <- list(obs=sim$Iobs)
 nimCBcon <- list(M=nrow(sim),pop=pop,r0=r0)
 
 nimCBinits <- list(I=sim$I,
-                   effprop=effprop,
+                   effpropS=effpropS,
+                   effpropI=effpropI,
                    beta=beta,
                    reporting=reporting,
-                   s0=effprop*pop)
+                   s0=effpropS*pop)
 nimcb <- MCMCsuite(code=nimcode,
                    data=nimCBdata,
                    inits=nimCBinits,
                    constants=nimCBcon,
                    MCMCs=c("jags","nimble"),
-                   monitors=c("beta","reporting","effprop"),
+                   monitors=c("beta","reporting","effpropS","effpropI"),
                    niter=4000,
                    makePlot=TRUE,
                    savePlot=TRUE)
