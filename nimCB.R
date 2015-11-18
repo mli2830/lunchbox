@@ -13,7 +13,7 @@ nimcode <- nimbleCode({
   pSI[1] <- 1 - (1-beta)^I[1]
   obs[1] ~ dbin(reporting , I[1])
   
-  for(t in 2:M){
+  for(t in 2:numobs){
     I[t] ~ dbin(pSI[t-1],S[t-1])
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]

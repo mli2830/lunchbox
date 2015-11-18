@@ -14,7 +14,7 @@ nimcode <- nimbleCode({
   IOBSscale <- 1/(1-reporting+zerohack)
   obs[1] ~ dgamma(IOBSshape[1], IOBSscale)
   
-  for(t in 2:M){
+  for(t in 2:numobs){
     #I[t] ~ dbin(pSI[t-1],S[t-1])
     SIGshape[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1] + zerohack) + zerohack
     SIGscale[t] <- 1/(1-pSI[t-1] + zerohack)

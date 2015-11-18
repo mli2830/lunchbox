@@ -14,14 +14,14 @@
 ##' matplot(s1[,1],s1[,-1],type="b",lty=1,pch=1,
 ##'         col=c(1,2,4,5))
 simCB <- function(beta = 0.02, pop=100, effpropS=0.9, effpropI=0.2,
-                 t0=1, end=20, reporting=1, seed=NULL){
+                 t0=1, numobs=20, reporting=1, seed=NULL){
 
   ## BMB: change name to "chain-binomial" ? e.g., simCB?
   ## *all* infecteds recover in the next time step
     
   ## default params: R0=beta*N=2
   if (!is.null(seed)) set.seed(seed)
-  tvec <- seq(1,end)
+  tvec <- seq(1,numobs)
   n <- length(tvec)
   I <- Iobs <- S <- R <- numeric(n)
   

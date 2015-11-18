@@ -10,23 +10,26 @@ effpropS <- 0.8
 effpropI <- 0.2
 reporting <- 0.8
 
-s0 <- effprop*pop
+s0 <- effpropS*pop
 r0 <- 0
 zerohack <- 0.001
+numobs <- 20
 
 ##creating the data ----
 
 source("SIsimulator.R")
 
-sim <- simCB(beta=beta,pop=pop,effpropS=effpropS,effpropI=effpropI,seed=3)
+sim <- simCB(beta=beta,pop=pop,effpropS=effpropS,effpropI=effpropI,
+             numobs=20,seed=3)
 sim
 
 
 
 data <- list(obs=sim$Iobs,
-             pop=100,
-             M=nrow(sim),
-             r0=0)
+             pop=pop,
+             numobs=nrow(sim),
+             r0=r0,
+             s0=s0)
 
 ##initial values -----
 
@@ -56,7 +59,7 @@ cbjags <- jags(data=data,
 source('nimCB.R')
 
 nimCBdata <- list(obs=sim$Iobs)
-nimCBcon <- list(M=nrow(sim),pop=pop,r0=r0)
+nimCBcon <- list(numobs=numobs,pop=pop,r0=r0)
 
 nimCBinits <- list(I=sim$I,
                    effpropS=effpropS,
@@ -92,14 +95,14 @@ hybridjags <- jags(data=data,
 source('nimhybrid.R')
 
 nimhydata <- list(obs=sim$Iobs+zerohack)
-nimhycon <- list(M=nrow(sim),pop=pop,r0=r0,zerohack=zerohack)
+nimhycon <- list(numobs=numobs,pop=pop,r0=r0,zerohack=zerohack)
 
 nimhyinits <- list(I=sim$I+zerohack,
                    effpropS=effpropS,
                    effpropI=effpropI,
                    beta=beta,
                    reporting=reporting,
-                   s0=effpropS*pop)
+                   s0=s0)
 nimcb <- MCMCsuite(code=nimcode,
                    data=nimhydata,
                    inits=nimhyinits,
@@ -110,20 +113,19 @@ nimcb <- MCMCsuite(code=nimcode,
                    makePlot=TRUE,
                    savePlot=TRUE)
 
-
 ## hybrid stan ----
+
 
 obs <- sim$Iobs + 0.02
 N = 20
 pop = 100
 i0=2
-epi=0.01
+zerohack=0.01
 I<- obs + 0.02
 
 ## all default options: runs
-s1 <- stan(file='hybrid.stan',data=list(obs=obs,N=N,pop=pop,i0=i0,
-                                      I=I,epi=epi), init="0",
-           pars=c("beta","reporting","effprop","I"),iter=2000,
+s1 <- stan(file='hybrid.stan',data=data, init="0",
+           pars=c("beta","reporting","effpropS","effpropI","I"),iter=2000,
            seed=1001,
            chains = 1)
 

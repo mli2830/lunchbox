@@ -1,8 +1,8 @@
 data {
-int<lower=0> N; // number of data points
-real obs[N]; // response
+int<lower=0> numobs; // number of data points
+real obs[numobs]; // response
 int pop;
-int i0;
+int r0;
 real zerohack;
 }
 parameters {
@@ -10,24 +10,34 @@ parameters {
 //  ... otherwise chain wanders off to outer space
 real <lower=0.01,upper=0.2> beta;
 real <lower=0.1,upper=0.99> reporting;
-real <lower=0.1,upper=1> effprop;
-real <lower=0.1> I[N];
+real <lower=0.1,upper=1> effpropS;
+real <lower=0.1,upper=1> effpropI;
+real <lower=0.1> I[numobs];
 }
 model {
-vector[N] pSI;
-vector[N] S;
-vector[N] shap;
-S[1] <- effprop*pop;
-pSI[1]<- 1 - (1-beta)^i0;
-shap[1] <- pSI[1]*S[1]/(1-pSI[1]+zerohack);
-print("S=",S[1],"; pSI=",pSI[1],"; shap=",shap[1],"; I=",I[1]);
-I[1] ~ gamma(5.0,1.0);
-print("S=",S[1],"; pSI=",pSI[1],"; shap=",shap[1],"; I=",I[1]);
-for (t in 2:N) {
-shap[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1]+zerohack);
-I[t] ~ gamma(exp(shap[t]),1/(1-pSI[t-1]+zerohack));
-S[t] <- S[t-1] - I[t];
-pSI[t] <- 1.0 - (1.0-beta)^I[t];
-obs[t] ~ gamma(reporting*I[t]/(1.0-reporting+zerohack),1.0/(1.0-reporting+zerohack));
-}
+vector[numobs] pSI;
+vector[numobs] S;
+vector[numobs] shape;
+vector[numobs] IOBSshape;
+vector[numobs] SIGshape;
+vector[numobs] SIGscale;
+//real IOBSscale
+s0 ~ gamma(effpropS*pop/(1-effpropS),1/(1-effpropS));
+S[1] <- s0;
+I[1] ~ gamma(effpropI*(pop-S[1])/(1-effpropI),1/(1-effpropI));
+pSI[1]<- 1 - (1-beta)^I[1];
+IOBSshape[1] <- reporting*I[1]/(1-reporting);
+IOBSscale <- 1/(1-reporting+zerohack);
+obs[1] ~ gamma(IOBSshape[1], IOBSscale);
+
+for (t in 2:numobs) {
+  SIGshape[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1] + zerohack) + zerohack;
+  SIGscale[t] <- 1/(1-pSI[t-1] + zerohack);
+  I[t] ~ gamma(SIGshape[t],SIGscale[t]);
+  S[t] <- S[t-1] - I[t];
+  R[t] <- R[t-1] + I[t-1];
+  pSI[t] <- 1 - (1-beta)^I[t];
+  IOBSshape[t] <- reporting*I[t]/(1-reporting+zerohack) + zerohack
+  obs[t] ~ gamma(IOBSshape[t],IOBSscale)
+  }
 }
