@@ -33,7 +33,7 @@ data <- list(obs=sim$Iobs,
 
 ##initial values -----
 
-inits <- list(list(I = sim$Iobs+1,
+inits <- list(list(I = c(i0,sim$I[2:20]+1),
               effprop=effprop,
               beta = beta,
               reporting = reporting))
