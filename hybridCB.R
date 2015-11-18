@@ -87,6 +87,30 @@ hybridjags <- jags(data=data,
                n.iter = 8000,
                n.chains = 1)
 
+## fit hybrid nimble ----
+
+source('nimhybrid.R')
+
+nimhydata <- list(obs=sim$Iobs+zerohack)
+nimhycon <- list(M=nrow(sim),pop=pop,r0=r0,zerohack=zerohack)
+
+nimhyinits <- list(I=sim$I+zerohack,
+                   effpropS=effpropS,
+                   effpropI=effpropI,
+                   beta=beta,
+                   reporting=reporting,
+                   s0=effpropS*pop)
+nimcb <- MCMCsuite(code=nimcode,
+                   data=nimhydata,
+                   inits=nimhyinits,
+                   constants=nimhycon,
+                   MCMCs=c("jags","nimble"),
+                   monitors=c("beta","reporting","effpropS","effpropI"),
+                   niter=4000,
+                   makePlot=TRUE,
+                   savePlot=TRUE)
+
+
 ## hybrid stan ----
 
 obs <- sim$Iobs + 0.02
