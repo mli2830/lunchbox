@@ -13,7 +13,7 @@
 ##' s1 <- simSI(beta=0.02,Pobs=0.7)
 ##' matplot(s1[,1],s1[,-1],type="b",lty=1,pch=1,
 ##'         col=c(1,2,4,5))
-simCB <- function(beta = 0.02, pop=100, effprop=0.9, i0=1,
+simCB <- function(beta = 0.02, pop=100, effpropS=0.9, effpropI=0.2,
                  t0=1, end=20, reporting=1, seed=NULL){
 
   ## BMB: change name to "chain-binomial" ? e.g., simCB?
@@ -26,10 +26,11 @@ simCB <- function(beta = 0.02, pop=100, effprop=0.9, i0=1,
   I <- Iobs <- S <- R <- numeric(n)
   
   ##Initial conditions
-  S[1] <- round(effprop*pop)
-  I[1] <- i0
+  S[1] <- round(effpropS*pop)
+  I[1] <- round(effpropI*(pop-S[1]))+1
   R[1] <- 0
-  Psi <- 1 - (1-beta)^I[1]  ## Reed-Frost
+  Psi <- 1 - (1-beta)^I[1]
+  Iobs[1] <- rbinom(1,prob=reporting,size=I[1])## Reed-Frost
   ## e.g. see http://depts.washington.edu/sismid09/software/Module_7/reedfrost.R
   ## or the somewhat lame Wikipedia page
   

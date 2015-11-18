@@ -2,17 +2,15 @@ library(R2jags)
 library(nimble)
 library(rstan)
 options(mc.cores = parallel::detectCores())
-source('nimCB.R')
-
 
 ## parameters -----
 beta <- 0.02
 pop <- 100
-effprop <- 0.8
+effpropS <- 0.8
+effpropI <- 0.2
 reporting <- 0.8
 
 s0 <- effprop*pop
-i0 <- 2
 r0 <- 0
 zerohack <- 0.001
 
@@ -20,7 +18,7 @@ zerohack <- 0.001
 
 source("SIsimulator.R")
 
-sim <- simCB(beta=beta,pop=pop,effprop=effprop,i0=i0,seed=3)
+sim <- simCB(beta=beta,pop=pop,effpropS=effpropS,effpropI=effpropI,seed=3)
 sim
 
 
@@ -28,21 +26,22 @@ sim
 data <- list(obs=sim$Iobs,
              pop=100,
              M=nrow(sim),
-             i0=2,
              r0=0)
 
 ##initial values -----
 
-inits <- list(list(I = c(i0,sim$I[2:20]+1),
-              effprop=effprop,
+inits <- list(list(I = sim$I+1,
+              effpropS=effpropS,
+              effpropI=effpropI,
               beta = beta,
               reporting = reporting))
 
 ## fit CB jags ----
 
 params = c('beta',
-              'effprop',
-              'reporting')
+           'effpropS',
+           'effpropI',
+           'reporting')
 
 rjags::set.factory("bugs::Conjugate", FALSE, type="sampler")
 
@@ -54,9 +53,10 @@ cbjags <- jags(data=data,
                n.chains = 1)
 
 ## fit CB nimble ----
+source('nimCB.R')
 
 nimCBdata <- list(obs=sim$Iobs)
-nimCBcon <- list(M=nrow(sim),i0=i0,pop=pop,r0=r0)
+nimCBcon <- list(M=nrow(sim),pop=pop,r0=r0)
 
 nimCBinits <- list(I=sim$I,
                    effprop=effprop,
@@ -77,8 +77,6 @@ nimcb <- MCMCsuite(code=nimcode,
 
 ## fit hybrid jags ----
 
-data$obs <- data$obs 
-inits[[1]]$I <- inits[[1]]$I 
 hybridjags <- jags(data=data,
                inits=inits,
                param = params,
