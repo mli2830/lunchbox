@@ -1,26 +1,42 @@
 library(R2jags)
 library(nimble)
+library(rstan)
+options(mc.cores = parallel::detectCores())
+source('nimCB.R')
+
+
+## parameters -----
+beta <- 0.02
+pop <- 100
+effprop <- 0.8
+reporting <- 0.8
+
+s0 <- effprop*pop
+i0 <- 2
+r0 <- 0
+zerohack <- 0.001
 
 ##creating the data ----
 
 source("SIsimulator.R")
 
-sim <- simCB(beta=0.02,pop=100,effprop=0.8,i0=2,seed=3)
+sim <- simCB(beta=beta,pop=pop,effprop=effprop,i0=i0,seed=3)
 sim
 
 
 
 data <- list(obs=sim$Iobs,
              pop=100,
-             M=length(sim$Iobs),
-             i0=2)
+             M=nrow(sim),
+             i0=2,
+             r0=0)
 
 ##initial values -----
 
 inits <- list(list(I = sim$Iobs+1,
-              effprop=0.8,
-              beta = 0.01,
-              reporting = 0.8))
+              effprop=effprop,
+              beta = beta,
+              reporting = reporting))
 
 ## fit CB jags ----
 
@@ -33,71 +49,44 @@ rjags::set.factory("bugs::Conjugate", FALSE, type="sampler")
 cbjags <- jags(data=data,
                inits=inits,
                param = params,
-               model=function(){
-                 ## inits
-                 reporting ~ dunif(0,1)
-                 effprop ~ dunif(0,1)
-                 beta ~ dunif(0,0.2)
-                 S[1] ~ dbin(effprop,pop)
-                 R[1] <- 0
-                 pSI[1] <- 1 - (1-beta)^i0 
-                 I[1] ~ dbin(pSI[1],S[1])
-                 obs[1] ~ dbin(reporting , I[1])
-                 
-                 for(t in 2:M){
-                   I[t] ~ dbin(pSI[t-1],S[t-1])
-                   S[t] <- S[t-1] - I[t]
-                   R[t] <- R[t-1] + I[t-1]
-                   pSI[t] <- 1 - (1-beta)^I[t]
-                   obs[t] ~ dbin(reporting,I[t])
-                 }
-               },
+               model.file = "CB.bug",
                n.iter = 8000,
                n.chains = 1)
 
+## fit CB nimble ----
+
+nimCBdata <- list(obs=sim$Iobs)
+nimCBcon <- list(M=nrow(sim),i0=i0,pop=pop,r0=r0)
+
+nimCBinits <- list(I=sim$I,
+                   effprop=effprop,
+                   beta=beta,
+                   reporting=reporting,
+                   s0=effprop*pop)
+nimcb <- MCMCsuite(code=nimcode,
+                   data=nimCBdata,
+                   inits=nimCBinits,
+                   constants=nimCBcon,
+                   MCMCs=c("jags","nimble"),
+                   monitors=c("beta","reporting","effprop"),
+                   niter=4000,
+                   makePlot=TRUE,
+                   savePlot=TRUE)
+
+## Why can't we do CB stan?? because ints are non-differentiable
+
 ## fit hybrid jags ----
 
-data$obs <- data$obs + 0.0001
-
+data$obs <- data$obs 
+inits[[1]]$I <- inits[[1]]$I 
 hybridjags <- jags(data=data,
                inits=inits,
                param = params,
-               model=function(){
-                 ## inits
-                 reporting ~ dunif(0,1)
-                 effprop ~ dunif(0,1)
-                 beta ~ dunif(0,0.2)
-#                 S[1] ~ dbin(effprop,pop)
-                 S[1] <- effprop*pop
-                 R[1] <- 0
-                 pSI[1] <- 1 - (1-beta)^i0 
-#                 I[1] ~ dbin(pSI[1],S[1])
-                 I[1] ~ dgamma(pSI[1]*S[1]/(1-pSI[1]),
-                               1/(1-pSI[1]))
-#                 obs[1] ~ dbin(reporting , I[1])
-                 obs[1] ~ dgamma(reporting*I[1]/(1-reporting),
-                                 1/(1-reporting))
-                 
-                 for(t in 2:M){
-#                   I[t] ~ dbin(pSI[t-1],S[t-1])
-                   I[t] ~ dgamma(pSI[t-1]*S[t-1]/(1-pSI[t-1]),
-                                 1/(1-pSI[t-1]))
-                   S[t] <- S[t-1] - I[t]
-                   R[t] <- R[t-1] + I[t-1]
-                   pSI[t] <- 1 - (1-beta)^I[t]
-#                   obs[t] ~ dbin(reporting,I[t])
-                   obs[t] ~ dgamma(reporting*I[t]/(1-reporting),
-                                   1/(1-reporting))
-                 }
-               },
+               model.file = "hybrid.bug",
                n.iter = 8000,
                n.chains = 1)
 
 ## hybrid stan ----
-
-library("rstan")
-options(mc.cores = parallel::detectCores())
-
 
 obs <- sim$Iobs + 0.02
 N = 20
@@ -109,6 +98,8 @@ I<- obs + 0.02
 ## all default options: runs
 s1 <- stan(file='hybrid.stan',data=list(obs=obs,N=N,pop=pop,i0=i0,
                                       I=I,epi=epi), init="0",
-           pars=c("beta","reporting","effprop"),iter=2000,
+           pars=c("beta","reporting","effprop","I"),iter=2000,
            seed=1001,
            chains = 1)
+
+

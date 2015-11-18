@@ -1,8 +1,9 @@
 data {
 int<lower=0> N; // number of data points
-real obs[N]; // response
+int obs[N]; // response
 int pop;
 int i0;
+int s0;
 real zerohack;
 }
 parameters {
@@ -11,23 +12,20 @@ parameters {
 real <lower=0.01,upper=0.2> beta;
 real <lower=0.1,upper=0.99> reporting;
 real <lower=0.1,upper=1> effprop;
-real <lower=0.1> I[N];
+real <lower=0> I[N];
 }
 model {
 vector[N] pSI;
 vector[N] S;
 vector[N] shap;
-S[1] <- effprop*pop;
+s0 ~ binomial(pop,effprop);
+S[1] <- s0;
 pSI[1]<- 1 - (1-beta)^i0;
-shap[1] <- pSI[1]*S[1]/(1-pSI[1]+zerohack);
-print("S=",S[1],"; pSI=",pSI[1],"; shap=",shap[1],"; I=",I[1]);
-I[1] ~ gamma(5.0,1.0);
-print("S=",S[1],"; pSI=",pSI[1],"; shap=",shap[1],"; I=",I[1]);
+obs[1] ~ binomial(i0,reporting);
 for (t in 2:N) {
-shap[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1]+zerohack);
-I[t] ~ gamma(exp(shap[t]),1/(1-pSI[t-1]+zerohack));
+I[t] ~ binomial(S[t-1],pSI[t-1]);
 S[t] <- S[t-1] - I[t];
 pSI[t] <- 1.0 - (1.0-beta)^I[t];
-obs[t] ~ gamma(reporting*I[t]/(1.0-reporting+zerohack),1.0/(1.0-reporting+zerohack));
+obs[t] ~ binomial(I[t],reporting);
 }
 }

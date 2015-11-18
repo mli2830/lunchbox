@@ -5,7 +5,7 @@
 ##' @param t0 initial time (unused)
 ##' @param end ending time
 ##' @param seed random number seed
-##' @param Pobs observation probability (1 by default)
+##' @param reporting observation probability (1 by default)
 ##' @return a data frame with columns (time, S, I, R)
 ##' @details This is a Reed-Frost model.  N=s0+i0.
 ##' @examples
@@ -14,7 +14,7 @@
 ##' matplot(s1[,1],s1[,-1],type="b",lty=1,pch=1,
 ##'         col=c(1,2,4,5))
 simCB <- function(beta = 0.02, pop=100, effprop=0.9, i0=1,
-                 t0=1, end=20, Pobs=1, seed=NULL){
+                 t0=1, end=20, reporting=1, seed=NULL){
 
   ## BMB: change name to "chain-binomial" ? e.g., simCB?
   ## *all* infecteds recover in the next time step
@@ -43,7 +43,7 @@ simCB <- function(beta = 0.02, pop=100, effprop=0.9, i0=1,
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]
     Psi <- 1 - (1-beta)^I[t]
-    Iobs[t] <- rbinom(1,prob=Pobs,size=I[t])
+    Iobs[t] <- rbinom(1,prob=reporting,size=I[t])
   }
   
   data.frame(time=tvec, S, I, R, Iobs)
