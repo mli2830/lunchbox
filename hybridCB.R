@@ -77,6 +77,8 @@ nimcb <- MCMCsuite(code=nimcode,
 ## Why can't we do CB stan?? because ints are non-differentiable
 
 ## fit hybrid jags ----
+data$obs = data$obs+zerohack
+data$zerohack = zerohack
 
 hybridjags <- jags(data=data,
                inits=inits,
