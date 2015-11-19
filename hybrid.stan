@@ -2,8 +2,6 @@ data {
 int<lower=0> numobs; // number of data points
 real obs[numobs]; // response
 real pop;
-real r0;
-real s0;
 real zerohack;
 }
 parameters {
@@ -11,47 +9,47 @@ real <lower=0.01,upper=0.2> beta;
 real <lower=0,upper=0.9> reporting;
 real <lower=0,upper=1> effpropS;
 real <lower=0,upper=1> effpropI;
-real <lower=0, upper=pop> I[numobs];
+real <lower=0> I[numobs];
 }
 transformed parameters{
-real <lower=0,upper=1> pSI[numobs];
-real <lower=0> SIGrate[numobs];
-real <lower=0> SIGshape[numobs];
-real <lower=0> IOBSshape[numobs];
-real <lower=0> IOBSrate;
-real <lower=0,upper=pop> S[numobs];
+real <lower=effpropS*pop,upper=pop> s0;
 real <lower=0> Sshape;
 real <lower=0> Srate;
 real <lower=0> IGrate;
 real <lower=0> IGshape;
+real <lower=0> IOBSrate;
+
 Sshape <- effpropS*pop/(1-effpropS);
 Srate <- 1/(1-effpropS);
-S[1] <- s0;
+s0 <- effpropS*pop;
 IOBSrate <- 1/(1-reporting);
-pSI[1] <- 1-(1-beta)^I[1];
-IOBSshape[1] <- reporting*I[1]/(1-reporting);
+IGshape <- effpropI*(pop-s0)/(1-effpropI);
 IGrate <- 1/(1-effpropI);
-IGshape <- effpropI*(pop-S[1])/(1-effpropI);
-for(i in 2:numobs){
-  IOBSshape[i] <- reporting*I[i]/(1-reporting);
-  SIGshape[i] <- pSI[i-1]*S[i-1]/(1-pSI[i-1]);
-  SIGrate[i] <- 1/(1-pSI[i-1]);
-  pSI[i] <- 1 - (1-beta)^I[i];
-  print("S=",S[1],", pSI=",pSI[1]);
-  S[i] <- S[i-1] - I[i];
-}
 }
 model {
-vector[numobs] R;
+vector[numobs] S;
+vector[numobs] pSI;
+vector[numobs] SIGshape;
+vector[numobs]SIGrate;
+vector[numobs] IOBSshape;
 s0 ~ gamma(Sshape,Srate);
-R[1] <- r0;
-I[1] ~ gamma(IGshape,IGrate);
+S[1] <- s0;
+SIGshape[1] <- IGshape;
+SIGrate[1] <- IGrate;
+I[1] ~ gamma(SIGshape[1],SIGrate[1]);
+pSI[1] <- 1 - (1-beta)^I[1];
+IOBSshape[1] <- reporting*I[1]/(1-reporting);
 obs[1] ~ gamma(IOBSshape[1], IOBSrate);
-//print(", S=",S[1],", I=", I[1], ", pSI=", pSI[1], ", sp=",IOBSshape[1], ", rt=",IOBSrate);
+
+
 for (t in 2:numobs) {
-//  print(", shape=",SIGshape[2],", rate=", SIGrate[2]);
+  SIGshape[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1]);
+  SIGrate[t] <- 1/(1-pSI[t-1]);
+  pSI[t] <- 1 - (1-beta)^I[t];
+  S[t] <- S[t-1] - I[t] + zerohack; // < 0 this will never happen in binomial 
+  IOBSshape[t] <- reporting*I[t]/(1-reporting);
   I[t] ~ gamma(SIGshape[t],SIGrate[t]);
-  R[t] <- R[t-1] + I[t-1];
+  print("SIGshape=",SIGshape[t],", pSI=",pSI[t])
   obs[t] ~ gamma(IOBSshape[t],IOBSrate);
   }
 }

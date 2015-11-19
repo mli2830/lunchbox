@@ -28,8 +28,8 @@ sim
 data <- list(obs=sim$Iobs,
              pop=pop,
              numobs=nrow(sim),
-             r0=r0,
-             s0=s0)
+#             s0=s0,
+             r0=r0)
 
 ##initial values -----
 
@@ -66,7 +66,7 @@ nimCBinits <- list(I=sim$I,
                    effpropI=effpropI,
                    beta=beta,
                    reporting=reporting,
-                   s0=effpropS*pop)
+                   s0=s0)
 nimcb <- MCMCsuite(code=nimcode,
                    data=nimCBdata,
                    inits=nimCBinits,
@@ -102,7 +102,8 @@ nimhyinits <- list(I=sim$I+zerohack,
                    effpropI=effpropI,
                    beta=beta,
                    reporting=reporting,
-                   s0=s0)
+                   s0=s0
+                   )
 nimcb <- MCMCsuite(code=nimcode,
                    data=nimhydata,
                    inits=nimhyinits,
@@ -115,17 +116,9 @@ nimcb <- MCMCsuite(code=nimcode,
 
 ## hybrid stan ----
 
-
-obs <- sim$Iobs + 0.02
-N = 20
-pop = 100
-i0=2
-zerohack=0.01
-I<- obs + 0.02
-
 ## all default options: runs
-s1 <- stan(file='hybrid.stan',data=data, init="i",
-           pars=c("beta","reporting","effpropS","effpropI","I"),iter=2000,
+s1 <- stan(file='hybrid.stan',data=data, init=inits,
+           pars=c("beta","reporting","effpropS","effpropI","I"),iter=10,
            seed=1001,
            chains = 1)
 
