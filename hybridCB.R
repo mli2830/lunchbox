@@ -124,7 +124,7 @@ zerohack=0.01
 I<- obs + 0.02
 
 ## all default options: runs
-s1 <- stan(file='hybrid.stan',data=data, init="0",
+s1 <- stan(file='hybrid.stan',data=data, init="i",
            pars=c("beta","reporting","effpropS","effpropI","I"),iter=2000,
            seed=1001,
            chains = 1)
