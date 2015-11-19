@@ -17,7 +17,7 @@ numobs <- 20
 
 ##creating the data ----
 
-source("SIsimulator.R")
+source("CBsimulator.R")
 
 sim <- simCB(beta=beta,pop=pop,effpropS=effpropS,effpropI=effpropI,
              numobs=20,seed=3)
