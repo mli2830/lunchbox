@@ -43,13 +43,13 @@ obs[1] ~ gamma(IOBSshape[1], IOBSrate);
 
 
 for (t in 2:numobs) {
+  pSI[t] <- 1 - (1-beta)^I[t];
+  S[t] <- S[t-1] - I[t] + zerohack; // < 0 will never happen in binomial 
   SIGshape[t] <- pSI[t-1]*S[t-1]/(1-pSI[t-1]);
   SIGrate[t] <- 1/(1-pSI[t-1]);
-  pSI[t] <- 1 - (1-beta)^I[t];
-  S[t] <- S[t-1] - I[t] + zerohack; // < 0 this will never happen in binomial 
-  IOBSshape[t] <- reporting*I[t]/(1-reporting);
   I[t] ~ gamma(SIGshape[t],SIGrate[t]);
-  print("SIGshape=",SIGshape[t],", pSI=",pSI[t])
+//  print("SIGshape=",SIGshape[t],", pSI=",pSI[t])
+  IOBSshape[t] <- reporting*I[t]/(1-reporting);
   obs[t] ~ gamma(IOBSshape[t],IOBSrate);
   }
 }

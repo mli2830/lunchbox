@@ -117,7 +117,7 @@ nimcb <- MCMCsuite(code=nimcode,
 ## hybrid stan ----
 
 ## all default options: runs
-s1 <- stan(file='hybrid.stan',data=data, init=inits,
+s1 <- stan(file='hybrid.stan',data=data, init="1",
            pars=c("beta","reporting","effpropS","effpropI","I"),iter=10,
            seed=1001,
            chains = 1)
