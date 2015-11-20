@@ -1,11 +1,15 @@
-model{## inits
+model{
+
+## parameter priors
 reporting ~ dunif(0,1)
 effpropS ~ dunif(0,1)
 effpropI ~ dunif(0,1)
 beta ~ dunif(0,0.2)
-S[1] ~ dbin(effpropS,pop)
-R[1] <- r0
+
+## ~ node magic
 pSI[1] <- 1 - (1-beta)^I[1] 
+R[1] <- r0
+S[1] ~ dbin(effpropS,pop)
 I[1] ~ dbin(effpropI,pop-S[1])
 obs[1] ~ dbin(reporting , I[1]+1)
                  
