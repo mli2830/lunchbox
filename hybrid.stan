@@ -8,7 +8,7 @@ parameters {
 real <lower=0.01,upper=0.2> beta;
 real <lower=0,upper=0.9> reporting;
 real <lower=0,upper=1> effpropS;
-real <lower=0,upper=1> effpropI;
+real <lower=0,upper=0.3> effpropI;
 real <lower=0> I[numobs];
 }
 transformed parameters{

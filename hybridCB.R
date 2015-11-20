@@ -143,7 +143,31 @@ allhybrids <- MCMCsuite(code=nimcode,
                    stan_model="hybrid.stan",
                    MCMCs=c("jags","nimble","stan"),
                    monitors=c("beta","reporting","effpropS","effpropI"),
-                   niter=4000,
+                   niter=10000,
                    makePlot=TRUE,
                    savePlot=TRUE)
+
+## fit CB nimble and hybrid stan ----
+source('nimCB.R')
+
+nimCBdata <- list(obs=sim$Iobs)
+nimCBcon <- list(numobs=numobs,pop=pop,r0=r0)
+
+nimCBinits <- list(I=sim$I,
+                   effpropS=effpropS,
+                   effpropI=effpropI,
+                   beta=beta,
+                   reporting=reporting,
+                   s0=s0)
+nimcb <- MCMCsuite(code=nimcode,
+                   data=nimCBdata,
+                   inits=nimCBinits,
+                   constants=nimCBcon,
+                   stan_model="hybrid.stan",
+                   MCMCs=c("jags","nimble","stan"),
+                   monitors=c("beta","reporting","effpropS","effpropI"),
+                   niter=10000,
+                   makePlot=TRUE,
+                   savePlot=TRUE)
+
 
