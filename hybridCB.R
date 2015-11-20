@@ -4,23 +4,13 @@ library(rstan)
 options(mc.cores = parallel::detectCores())
 
 ## parameters -----
-beta <- 0.02
-pop <- 100
-effpropS <- 0.8
-effpropI <- 0.2
-reporting <- 0.8
-
-s0 <- effpropS*pop
-r0 <- 0
-zerohack <- 0.001
-numobs <- 20
-
+source('paramsCB.R')
 ##creating the data ----
 
 source("CBsimulator.R")
 
 sim <- simCB(beta=beta,pop=pop,effpropS=effpropS,effpropI=effpropI,
-             numobs=20,seed=3)
+             numobs=numobs,seed=seed)
 sim
 
 
@@ -143,7 +133,7 @@ allhybrids <- MCMCsuite(code=nimcode,
                    stan_model="hybrid.stan",
                    MCMCs=c("jags","nimble","stan"),
                    monitors=c("beta","reporting","effpropS","effpropI"),
-                   niter=10000,
+                   niter=4000,
                    makePlot=TRUE,
                    savePlot=TRUE)
 
