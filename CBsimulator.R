@@ -1,14 +1,15 @@
 ##' Basic chain binomial simulator
 ##' @param beta prob. of adequate contact per infective
-##' @param effpropI initial infectives proportion
-##' @param effpropS initial susceptibles proportion
+##' @param population size
+##' @param effprop initial effective proportion of population
+##' @param i0 initial infected
 ##' @param t0 initial time (unused)
 ##' @param numobs ending time
 ##' @param seed random number seed
 ##' @param reporting observation probability (1 by default)
 ##' @return a data frame with columns (time, S, I, R)
 ##' @details This is a Reed-Frost model.  N=s0+i0 (not any-more CB? or Mike's CBS)
-simCB <- function(beta = 0.02, pop=100, effpropS=0.9, effpropI=0.2,
+simCB <- function(beta = 0.02, N=100, effprop=0.9, i0=1,
                   t0=1, numobs=20, reporting=1, seed=NULL){
   
   ## BMB: change name to "chain-binomial" ? e.g., simCB? (done)
@@ -21,9 +22,10 @@ simCB <- function(beta = 0.02, pop=100, effpropS=0.9, effpropI=0.2,
   I <- Iobs <- S <- R <- numeric(n)
   
   ##Initial conditions
-  S[1] <- round(effpropS*pop)
-  I[1] <- round(effpropI*(pop-S[1]))+1 ## at least 1 to work 
-  R[1] <- 0
+  N0 <- round(effprop*N)
+  I[1] <- i0
+  S[1] <- N0 - i0
+  R[1] <- N-N0
   Psi <- 1 - (1-beta)^I[1]
   Iobs[1] <- rbinom(1,prob=reporting,size=I[1])## Reed-Frost
   ## e.g. see http://depts.washington.edu/sismid09/software/Module_7/reedfrost.R

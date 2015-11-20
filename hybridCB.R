@@ -5,33 +5,33 @@ options(mc.cores = parallel::detectCores())
 
 ## parameters -----
 source('paramsCB.R')
+
 ##creating the data ----
 
 source("CBsimulator.R")
 
-sim <- simCB(beta=beta,pop=pop,effpropS=effpropS,effpropI=effpropI,
+sim <- simCB(beta=beta,N=N,effprop=effprop,i0=i0,reporting=reporting,
              numobs=numobs,seed=seed)
 
+sim
 
 data <- list(obs=sim$Iobs,
-             pop=pop,
+             N=N,
+             i0=i0,
              numobs=nrow(sim),
-#             s0=s0,
-             r0=r0)
+             zerohack=zerohack)
 
 ##initial values -----
-
-inits <- list(list(I = sim$I+1,
-              effpropS=effpropS,
-              effpropI=effpropI,
+inits <- list(list(I = sim$I,
+              effprop=effprop,
               beta = beta,
+              N0=N0,
               reporting = reporting))
 
 ## fit CB jags ----
 
 params = c('beta',
-           'effpropS',
-           'effpropI',
+           'effprop',
            'reporting')
 
 rjags::set.factory("bugs::Conjugate", FALSE, type="sampler")
@@ -47,29 +47,27 @@ cbjags <- jags(data=data,
 source('nimCB.R')
 
 nimCBdata <- list(obs=sim$Iobs)
-nimCBcon <- list(numobs=numobs,pop=pop,r0=r0)
+nimCBcon <- list(numobs=numobs,N=N,i0=i0)
 
 nimCBinits <- list(I=sim$I,
-                   effpropS=effpropS,
-                   effpropI=effpropI,
+                   effprop=effprop,
                    beta=beta,
                    reporting=reporting,
-                   s0=s0)
+                   N0=N0
+                   )
 nimcb <- MCMCsuite(code=nimcode,
                    data=nimCBdata,
                    inits=nimCBinits,
                    constants=nimCBcon,
                    MCMCs=c("jags","nimble"),
-                   monitors=c("beta","reporting","effpropS","effpropI"),
-                   niter=4000,
+                   monitors=c("beta","reporting","effprop"),
+                   niter=10000,
                    makePlot=TRUE,
                    savePlot=TRUE)
 
-## Why can't we do CB stan?? because ints are non-differentiable
-
 ## fit hybrid jags ----
 data$obs = data$obs+zerohack
-data$zerohack = zerohack
+inits[[1]]$I <- inits[[1]]$I + zerohack
 
 hybridjags <- jags(data=data,
                    inits=inits,
@@ -158,4 +156,5 @@ nimcb <- MCMCsuite(code=nimcode,
                    makePlot=TRUE,
                    savePlot=TRUE)
 
-
+nimmod <- nimbleModel(code=nimcode,data=nimCBdata,inits=nimCBinits,constants=nimCBcon)
+cmod <- configureMCMC(nimmod,print=TRUE)
