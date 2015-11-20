@@ -123,3 +123,28 @@ s1 <- stan(file='hybrid.stan',data=data, init=inits,
            chains = 1)
 
 
+## fit hybrid nimble ----
+
+source('nimhybrid.R')
+
+nimhydata <- list(obs=sim$Iobs+zerohack)
+nimhycon <- list(numobs=numobs,pop=pop,r0=r0,zerohack=zerohack)
+
+nimhyinits <- list(I=sim$I+zerohack,
+                   effpropS=effpropS,
+                   effpropI=effpropI,
+                   beta=beta,
+                   reporting=reporting,
+                   s0=s0
+)
+nimcb <- MCMCsuite(code=nimcode,
+                   data=nimhydata,
+                   inits=nimhyinits,
+                   constants=nimhycon,
+                   stan_model="hybrid.stan",
+                   MCMCs=c("jags","nimble","stan"),
+                   monitors=c("beta","reporting","effpropS","effpropI"),
+                   niter=4000,
+                   makePlot=TRUE,
+                   savePlot=TRUE)
+
