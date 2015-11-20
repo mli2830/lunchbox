@@ -122,8 +122,7 @@ s1 <- stan(file='hybrid.stan',data=data, init=inits,
            seed=1001,
            chains = 1)
 
-
-## fit hybrid nimble ----
+## fit all hybrid via nimble ----
 
 source('nimhybrid.R')
 
@@ -137,7 +136,7 @@ nimhyinits <- list(I=sim$I+zerohack,
                    reporting=reporting,
                    s0=s0
 )
-nimcb <- MCMCsuite(code=nimcode,
+allhybrids <- MCMCsuite(code=nimcode,
                    data=nimhydata,
                    inits=nimhyinits,
                    constants=nimhycon,
