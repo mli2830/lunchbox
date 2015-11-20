@@ -11,8 +11,6 @@ source("CBsimulator.R")
 
 sim <- simCB(beta=beta,pop=pop,effpropS=effpropS,effpropI=effpropI,
              numobs=numobs,seed=seed)
-sim
-
 
 
 data <- list(obs=sim$Iobs,
@@ -74,11 +72,11 @@ data$obs = data$obs+zerohack
 data$zerohack = zerohack
 
 hybridjags <- jags(data=data,
-               inits=inits,
-               param = params,
-               model.file = "hybrid.bug",
-               n.iter = 8000,
-               n.chains = 1)
+                   inits=inits,
+                   param = params,
+                   model.file = "hybrid.bug",
+                   n.iter = 8000,
+                   n.chains = 1)
 
 ## fit hybrid nimble ----
 
@@ -108,7 +106,7 @@ nimcb <- MCMCsuite(code=nimcode,
 
 ## all default options: runs
 s1 <- stan(file='hybrid.stan',data=data, init=inits,
-           pars=c("beta","reporting","effpropS","effpropI","I"),iter=8000,
+           pars=c("beta","reporting","effpropS","effpropI","I"),iter=4000,
            seed=1001,
            chains = 1)
 
@@ -156,7 +154,7 @@ nimcb <- MCMCsuite(code=nimcode,
                    stan_model="hybrid.stan",
                    MCMCs=c("jags","nimble","stan"),
                    monitors=c("beta","reporting","effpropS","effpropI"),
-                   niter=10000,
+                   niter=4000,
                    makePlot=TRUE,
                    savePlot=TRUE)
 
