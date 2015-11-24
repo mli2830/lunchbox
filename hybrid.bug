@@ -6,7 +6,7 @@ beta ~ dunif(0,0.2)
 
 #N0 ~ dbin(effprop,N)
 N0 ~ dgamma(N*effprop/(1-effprop),1/(1-effprop))
-I[1] ~ dunif(0,1)
+I[1] ~ dunif(0,3)
 S[1] <- N0 - I[1]
 
 pSI[1] <- 1 - (1-beta)^I[1] 

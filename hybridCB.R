@@ -61,6 +61,7 @@ nimcb <- MCMCsuite(code=nimcode,
                    constants=nimCBcon,
                    MCMCs=c("jags","nimble"),
                    monitors=c("beta","reporting","effprop"),
+                   calculateEfficiency=TRUE,
                    niter=10000,
                    makePlot=TRUE,
                    savePlot=TRUE)
@@ -84,8 +85,7 @@ nimhydata <- list(obs=sim$Iobs+zerohack)
 nimhycon <- list(numobs=numobs,pop=pop,r0=r0,zerohack=zerohack)
 
 nimhyinits <- list(I=sim$I+zerohack,
-                   effpropS=effpropS,
-                   effpropI=effpropI,
+                   effprop=effprop,
                    beta=beta,
                    reporting=reporting,
                    s0=s0
@@ -95,7 +95,7 @@ nimcb <- MCMCsuite(code=nimcode,
                    inits=nimhyinits,
                    constants=nimhycon,
                    MCMCs=c("jags","nimble"),
-                   monitors=c("beta","reporting","effpropS","effpropI"),
+                   monitors=c("beta","reporting","effprop"),
                    niter=4000,
                    makePlot=TRUE,
                    savePlot=TRUE)

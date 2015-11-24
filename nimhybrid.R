@@ -4,8 +4,9 @@ nimcode <- nimbleCode({
   effpropS ~ dunif(0,1)
   beta ~ dunif(0,0.2)
   effpropI ~ dunif(0,1)
-  #S[1] ~ dbin(effprop,pop)
-  s0 ~ dgamma(effpropS*pop/(1-effpropS),1/(1-effpropS))
+
+  N0 ~ dgamma(N*effprop/(1-effprop),1/(1-effprop))
+
   S[1] <- s0
   R[1] <- r0
   pSI[1] <- 1 - (1-beta)^I[1] 
