@@ -67,7 +67,6 @@ nimcb <- MCMCsuite(code=nimcode,
                    savePlot=TRUE)
 
 ## fit hybrid jags ----
-data$obs = data$obs+zerohack
 inits[[1]]$I <- inits[[1]]$I + zerohack
 
 hybridjags <- jags(data=data,
@@ -81,22 +80,23 @@ hybridjags <- jags(data=data,
 
 source('nimhybrid.R')
 
-nimhydata <- list(obs=sim$Iobs+zerohack)
-nimhycon <- list(numobs=numobs,pop=pop,r0=r0,zerohack=zerohack)
+nimhydata <- list(obs=sim$Iobs)
+nimhycon <- list(numobs=numobs,N=N,zerohack=zerohack)
 
 nimhyinits <- list(I=sim$I+zerohack,
                    effprop=effprop,
                    beta=beta,
                    reporting=reporting,
-                   s0=s0
+                   N0=N0
                    )
-nimcb <- MCMCsuite(code=nimcode,
+nimhy <- MCMCsuite(code=nimcode,
                    data=nimhydata,
                    inits=nimhyinits,
                    constants=nimhycon,
                    MCMCs=c("jags","nimble"),
                    monitors=c("beta","reporting","effprop"),
-                   niter=4000,
+                   calculateEfficiency=TRUE,
+                   niter=8000,
                    makePlot=TRUE,
                    savePlot=TRUE)
 
@@ -145,6 +145,7 @@ nimCBinits <- list(I=sim$I,
                    beta=beta,
                    reporting=reporting,
                    s0=s0)
+
 nimcb <- MCMCsuite(code=nimcode,
                    data=nimCBdata,
                    inits=nimCBinits,
