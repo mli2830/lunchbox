@@ -8,4 +8,6 @@ N0 <- N*effprop
 zerohack <- 0.001
 numobs <- 10
 
+iterations=8000
+
 seed=3

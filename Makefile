@@ -1,16 +1,24 @@
-##Make stuff
-target pngtarget pdftarget vtarget acrtarget: RSIwrapJAGS.Rout 
+lunch: NimbleCB.RData
+	less NimbleCB.Rout
 
-##################################################################
+dinner: simdata.RData nimCB.R NimbleCB.R eviltwin.R
+	R CMD BATCH eviltwin.R
+	less eviltwin.Rout
+###########################################################
 
-msrepo = https://github.com/dushoff
+###Simulate data
 
-gitroot = ../
--include local.mk
--include $(gitroot)/local.mk
-ms = $(gitroot)/makestuff
+simdata.RData: paramsCB.R CBsimulator.R simulateCB.R
+	 R CMD BATCH simulateCB.R
 
+###########################################################
+## FITTING MCMC
+### fit jags cb
 
+JagsCB.RData: simdata.RData CB.bug JagsCB.R
+	      R CMD BATCH JagsCB.R
 
-SImod: SIsimulator.R SImodel.bug RSIwrapJAGS.R
-				R CMD BATCH RSIwrapJAGS.R
+### 
+
+NimbleCB.RData: simdata.RData nimCB.R NimbleCB.R
+		R CMD BATCH NimbleCB.R

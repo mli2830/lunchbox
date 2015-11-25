@@ -1,5 +1,3 @@
-library(nimble)
-
 nimcode <- nimbleCode({
   ## inits
   reporting ~ dunif(0,1)

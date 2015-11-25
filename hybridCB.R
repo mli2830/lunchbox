@@ -40,7 +40,7 @@ cbjags <- jags(data=data,
                inits=inits,
                param = params,
                model.file = "CB.bug",
-               n.iter = 8000,
+               n.iter = iterations,
                n.chains = 1)
 
 ## fit CB nimble ----
