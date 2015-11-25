@@ -104,7 +104,7 @@ nimhy <- MCMCsuite(code=nimcode,
 
 ## all default options: runs
 s1 <- stan(file='hybrid.stan',data=data, init=inits,
-           pars=c("beta","reporting","effpropS","effpropI","I"),iter=4000,
+           pars=c("beta","reporting","effprop","I"),iter=4000,
            seed=1001,
            chains = 1)
 
