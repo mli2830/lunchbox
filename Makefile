@@ -1,5 +1,5 @@
-lunch: NimbleCB.RData
-	less NimbleCB.Rout
+lunch: JagsCB.Rout
+	less JagsCB.Rout
 
 ###########################################################
 
@@ -12,10 +12,10 @@ simdata.RData: paramsCB.R CBsimulator.R simulateCB.R
 ## FITTING MCMC
 ### fit jags cb
 
-JagsCB.RData: simdata.RData CB.bug JagsCB.R
+JagsCB.Rout: simdata.RData CB.bug JagsCB.R
 	      R CMD BATCH JagsCB.R
 
 ### 
 
-NimbleCB.RData: simdata.RData nimCB.R NimbleCB.R
+NimbleCB.Rout: simdata.RData nimCB.R NimbleCB.R
 		R CMD BATCH NimbleCB.R

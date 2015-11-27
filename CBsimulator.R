@@ -34,7 +34,7 @@ simCB <- function(beta = 0.02, N=100, effprop=0.9, i0=1,
     I[t] <- rbinom(1,prob=pSI[t-1],size=S[t-1])
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]
-    pSI <- 1 - (1-beta)^I[t]
+    pSI[t] <- 1 - (1-beta)^I[t]
     Iobs[t] <- rbinom(1,prob=reporting,size=I[t])
   }
   
