@@ -1,9 +1,6 @@
 require(nimble)
-?options(mc.cores = parallel::detectCores())
+options(mc.cores = parallel::detectCores())
 source('nimCB.R')
-
-rjags::set.factory("bugs::Conjugate", TRUE, type="sampler")
-
 
 nimCBdata <- list(obs=sim$Iobs)
 nimCBcon <- list(numobs=numobs,N=N,i0=i0)
@@ -35,6 +32,11 @@ print(NimbleCB$timing)
 print(NimbleCB$summary)
 
 source("nimCB2.R")
+
+nimmod <- nimbleModel(code=nimcode,constants=nimCBcon, data=nimCBdata,
+                      inits=nimCBinits)
+aa <- configureMCMC(nimmod,print=TRUE)
+
 NimbleCB2 <- MCMCsuite(code=nimcode,
                       data=nimCBdata,
                       inits=nimCBinits,

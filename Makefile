@@ -15,7 +15,14 @@ simdata.RData: paramsCB.R CBsimulator.R simulateCB.R
 JagsCB.Rout: simdata.RData CB.bug JagsCB.R
 	      R CMD BATCH JagsCB.R
 
-### 
+### fit nimble cb
 
 NimbleCB.Rout: simdata.RData nimCB.R nimCB2.R NimbleCB.R
 		R CMD BATCH NimbleCB.R
+		
+		
+
+### fit jags hybrid
+
+Jagshybrid.Rout: simdata.RData hybrid.bug Jagshybrid.R
+		R CMD BATCH Jagshybrid.R
