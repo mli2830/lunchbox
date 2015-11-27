@@ -17,5 +17,5 @@ JagsCB.Rout: simdata.RData CB.bug JagsCB.R
 
 ### 
 
-NimbleCB.Rout: simdata.RData nimCB.R NimbleCB.R
+NimbleCB.Rout: simdata.RData nimCB.R nimCB2.R NimbleCB.R
 		R CMD BATCH NimbleCB.R
