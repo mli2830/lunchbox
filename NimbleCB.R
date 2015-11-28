@@ -1,7 +1,7 @@
 require(nimble)
 options(mc.cores = parallel::detectCores())
 source('nimCB.R')
-
+nimbleOptions(verifyConjugatePosteriors=TRUE)
 nimCBdata <- list(obs=sim$Iobs)
 nimCBcon <- list(numobs=numobs,N=N,i0=i0)
 
