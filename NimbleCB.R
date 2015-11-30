@@ -26,7 +26,8 @@ NimbleCB <- MCMCsuite(code=nimcode,
                    calculateEfficiency=TRUE,
                    niter=10000,
                    makePlot=FALSE,
-                   savePlot=FALSE)
+                   savePlot=FALSE,
+                   setSeed=5)
 
 print(NimbleCB$timing)
 print(NimbleCB$summary)
@@ -46,7 +47,8 @@ NimbleCB2 <- MCMCsuite(code=nimcode,
                       calculateEfficiency=TRUE,
                       niter=10000,
                       makePlot=FALSE,
-                      savePlot=FALSE)
+                      savePlot=FALSE,
+                      setSeed=5)
 
 print(NimbleCB2$timing)
 print(NimbleCB2$summary)
