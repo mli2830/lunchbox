@@ -1,8 +1,8 @@
-snack: JagsCB.Rout
-       less JagsCB.Rout
+snack:	JagsCB.Rout
+	less JagsCB.Rout
 
 lunch: NimbleCB.Rout
-       less NimbleCB.Rout
+	less NimbleCB.Rout
 
 ###########################################################
 
@@ -16,7 +16,7 @@ simdata.RData: paramsCB.R CBsimulator.R simulateCB.R
 ### fit jags cb
 
 JagsCB.Rout: simdata.RData CB.bug JagsCB.R
-             R CMD BATCH JagsCB.R
+	     R CMD BATCH JagsCB.R
 
 ### fit nimble cb
 
