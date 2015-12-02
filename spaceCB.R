@@ -65,6 +65,19 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
   
 }
 
-sim <- simspaceCB(spacenum = 5, numobs=20, betaw=0.005, betab=0.0001, N=2000,seed=4, effinf=1)
+sim <- simspaceCB(spacenum = 4, numobs=40, betaw=0.001, betab=0.0001, N=4000,seed=4, effinf=1)
+sim
+plot(sim$Iobs)
+
+
+sim <- simspaceCB(spacenum = 2, numobs=40, betaw=0.001, betab=0.0001, N=4000,seed=4, effinf=1)
+sim
+plot(sim$Iobs)
+
+sim <- simspaceCB(spacenum = 3, numobs=20, betaw=0.001, betab=0.001, N=2000,seed=4, effinf=1)
+sim
+plot(sim$Iobs)
+
+sim <- simspaceCB(spacenum = 6, numobs=20, betaw=0.001, betab=0.0001, N=10000,seed=4, effinf=1)
 sim
 plot(sim$Iobs)
