@@ -1,7 +1,9 @@
-##' Basic chain binomial simulator
-##' @param beta prob. of adequate contact per infective
-##' @param population size
+##' Basic spatial chain binomial simulator
+##' @param betaw prob. of adequate contact per infective within population
+##' @param betab prob. of adequate contact per infective between population
+##' @param N population size
 ##' @param effprop initial effective proportion of population
+##' @param effinf proportion of infectives
 ##' @param i0 initial infected
 ##' @param t0 initial time (unused)
 ##' @param numobs ending time
@@ -79,5 +81,19 @@ sim
 plot(sim$Iobs)
 
 sim <- simspaceCB(spacenum = 6, numobs=20, betaw=0.001, betab=0.0001, N=10000,seed=4, effinf=1)
+sim
+plot(sim$Iobs)
+
+
+sim <- simspaceCB(spacenum = 10, numobs=30, betaw=0.01, betab=0.0005, N=1000,seed=4, effinf=1)
+sim
+plot(sim$Iobs)
+
+sim <- simspaceCB(spacenum = 15, numobs=30, betaw=0.001, betab=0.00008, N=20000,seed=4, effinf=1)
+sim
+plot(sim$Iobs)
+
+
+sim <- simspaceCB(spacenum = 2, numobs=20, betaw=0.01, betab=0.0003, N=1000,seed=4, effinf=1)
 sim
 plot(sim$Iobs)
