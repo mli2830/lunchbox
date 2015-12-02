@@ -9,7 +9,7 @@
 ##' @param reporting observation probability (1 by default)
 ##' @return a data frame with columns (time, S, I, R) 
 simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0.9, i0=1,
-                       t0=1, numobs=20, reporting=1, seed=NULL){
+                       effinf=0.8, t0=1, numobs=20, reporting=1, seed=NULL){
   
   ## *all* infecteds recover in the next time step
   
@@ -37,7 +37,7 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
     for (j in 1:spacenum){
       temp <- temp - (1-beta[i,j])^I[1,j] 
     }
-    pSI[1,i] <- min(temp,1)
+    pSI[1,i] <- effinf*min(temp,1)
   }
   
   Iobs[1] <- rbinom(1,prob=reporting,size=sum(I[1,]))
@@ -55,14 +55,16 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
         for (j in 1:spacenum){
           temp <- temp - (1-beta[i,j])^I[t,j]
         }
-    pSI[t,i] <- min(1, temp)
+    pSI[t,i] <- effinf*min(1, temp)
     Iobs[t] <- rbinom(1,prob=reporting,size=sum(I[t,]))
   }
     
     Iobs[t] <- rbinom(1,prob=reporting,size=sum(I[t,]))
   }
-  return(list(time=tvec, S=S, I=I, R=R, Iobs=Iobs))
+  return(list(time=tvec, S=S, I=I, R=R, Iobs=Iobs, pSI=pSI))
   
 }
 
-aa <- simspaceCB(spacenum = 2, numobs=20, betaw=0.005, betab=0.0001, N=2000,seed=4)
+sim <- simspaceCB(spacenum = 5, numobs=20, betaw=0.005, betab=0.0001, N=2000,seed=4, effinf=1)
+sim
+plot(sim$Iobs)
