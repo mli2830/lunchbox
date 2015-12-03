@@ -21,7 +21,7 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
   S  <- I <- pSI <- matrix(0,ncol=spacenum,nrow=numobs)
   beta <- matrix(betab,nrow=spacenum, ncol=spacenum)
   R <- Iobs <- numeric(numobs)
-#  pSI <- I <-array(0,dim=c(numobs,spacenum,spacenum))
+  #  pSI <- I <-array(0,dim=c(numobs,spacenum,spacenum))
   
   
   ##Initial conditions
@@ -34,12 +34,8 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
   for(i in 1:spacenum){
     beta[i,i] <- betaw
   }
-  for (i in 1:spacenum){
-    temp <- spacenum
-    for (j in 1:spacenum){
-      temp <- temp - (1-beta[i,j])^I[1,j] 
-    }
-    pSI[1,i] <- effinf*min(temp,1)
+  for(i in 1:spacenum){
+    pSI[1,i] <- 1 - exp(log(1-beta[i,])%*%t(I)[,1])
   }
   
   Iobs[1] <- rbinom(1,prob=reporting,size=sum(I[1,]))
@@ -48,31 +44,22 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
   
   for (t in 2:n){
     for (i in 1:spacenum){
-        I[t,i] <- rbinom(1,prob=pSI[t-1,i],size=S[t-1,i])
-        S[t,i] <- S[t-1,i] - I[t,i]
-        R[t] <- R[t-1] + sum(I[t-1,])
+      I[t,i] <- rbinom(1,prob=pSI[t-1,i],size=S[t-1,i])
+      S[t,i] <- S[t-1,i] - I[t,i]
+      pSI[t,i] <- 1 - exp(log(1-beta[i,])%*%t(I)[,t])
+      R[t] <- R[t-1] + sum(I[t-1,])
     }
-    for (i in 1:spacenum){
-      temp <- spacenum
-        for (j in 1:spacenum){
-          temp <- temp - (1-beta[i,j])^I[t,j]
-        }
-    pSI[t,i] <- effinf*min(1, temp)
-    Iobs[t] <- rbinom(1,prob=reporting,size=sum(I[t,]))
-  }
-    
     Iobs[t] <- rbinom(1,prob=reporting,size=sum(I[t,]))
   }
   return(list(time=tvec, S=S, I=I, R=R, Iobs=Iobs, pSI=pSI))
-  
 }
 
-sim <- simspaceCB(spacenum = 4, numobs=40, betaw=0.001, betab=0.0001, N=4000,seed=4, effinf=1)
+sim <- simspaceCB(spacenum = 4, numobs=40, betaw=0.001, betab=0.0005, N=4000,seed=4, effinf=1)
 sim
 plot(sim$Iobs)
 
 
-sim <- simspaceCB(spacenum = 2, numobs=40, betaw=0.001, betab=0.0001, N=4000,seed=4, effinf=1)
+sim <- simspaceCB(spacenum = 2, numobs=40, betaw=0.002, betab=0.001, N=4000,seed=4, effinf=1)
 sim
 plot(sim$Iobs)
 
@@ -80,7 +67,7 @@ sim <- simspaceCB(spacenum = 3, numobs=20, betaw=0.001, betab=0.001, N=2000,seed
 sim
 plot(sim$Iobs)
 
-sim <- simspaceCB(spacenum = 6, numobs=20, betaw=0.001, betab=0.0001, N=10000,seed=4, effinf=1)
+sim <- simspaceCB(spacenum = 6, numobs=20, betaw=0.01, betab=0.005, N=1000,seed=4, effinf=1)
 sim
 plot(sim$Iobs)
 
@@ -89,7 +76,7 @@ sim <- simspaceCB(spacenum = 10, numobs=30, betaw=0.01, betab=0.0005, N=1000,see
 sim
 plot(sim$Iobs)
 
-sim <- simspaceCB(spacenum = 15, numobs=30, betaw=0.001, betab=0.00008, N=20000,seed=4, effinf=1)
+sim <- simspaceCB(spacenum = 15, numobs=30, betaw=0.001, betab=0.0008, N=2000,seed=4, effinf=1)
 sim
 plot(sim$Iobs)
 
