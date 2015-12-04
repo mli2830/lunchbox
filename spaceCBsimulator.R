@@ -11,7 +11,7 @@
 ##' @param reporting observation probability (1 by default)
 ##' @return a data frame with columns (time, S, I, R, Iobs, pSI) 
 simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0.9, i0=1,
-                       effinf=0.8, t0=1, numobs=20, reporting=1, seed=NULL){
+                        t0=1, numobs=20, reporting=1, seed=NULL){
   
   ## *all* infecteds recover in the next time step
   

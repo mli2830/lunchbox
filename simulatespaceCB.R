@@ -1,10 +1,11 @@
 ##simulate CB data
-source('paramsCB.R')
+source('paramsSpaceCB.R')
 source("spaceCBsimulator.R")
 
-sim <- simspaceCB(spacenum = 4, numobs=40, betaw=0.001, betab=0.0005, N=4000,seed=4, effinf=1)
-# sim
-# plot(sim$Iobs)
+sim <- simspaceCB(spacenum = spacenum, numobs=numobs, 
+                  betaw=betaw, betab=betab, N=N,seed=seed)
+sim
+plot(sim$Iobs)
 
 save.image("spaceSimdata.RData")
 
