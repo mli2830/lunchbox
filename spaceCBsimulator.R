@@ -46,8 +46,10 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
     for (i in 1:spacenum){
       I[t,i] <- rbinom(1,prob=pSI[t-1,i],size=S[t-1,i])
       S[t,i] <- S[t-1,i] - I[t,i]
-      pSI[t,i] <- 1 - exp(log(1-beta[i,])%*%t(I)[,t])
       R[t] <- R[t-1] + sum(I[t-1,])
+    }
+    for (i in 1:spacenum){
+      pSI[t,i] <- 1 - exp(log(1-beta[i,])%*%t(I)[,t])
     }
     Iobs[t] <- rbinom(1,prob=reporting,size=sum(I[t,]))
   }

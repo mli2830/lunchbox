@@ -1,0 +1,39 @@
+model{
+  ## parameter priors
+  reporting ~ dbeta(1,1)
+  effprop ~ dbeta(1,1)
+  for(i in 1:spacenum){
+    for(j in 1:spacenum){
+      beta[i,j]~dunif(0,0.02)
+    }
+  }
+#  betaw ~ dunif(0,0.02)
+#  betab ~ dunif(0,0.002)
+  
+  N0 ~ dbin(effprop,N) 
+  I[1,1] ~ dbin(1,i0)
+  for(i in 2:spacenum){
+    I[1,i] ~ dbin(0,i0)
+  }
+  for(i in 2:spacenum){
+    S[1,i] <- subpop
+  }
+  S[1,1] <- subpop - i0
+  
+  for(i in 1:spacenum){
+    pSI[1,i] <- 1 - exp(inprod(log(1-beta[i,1:spacenum]),I[1,1:spacenum]))
+  }
+  
+  obs[1] ~ dbin(reporting , sum(I[1,1:spacenum]))
+  
+  for(t in 2:numobs){
+    for(i in 1:spacenum){
+      I[t,i] ~ dbin(pSI[t-1,i],S[t-1,i])
+      S[t,i] <- S[t-1,i] - I[t,i]
+    }
+    for(i in 1:spacenum){
+      pSI[t,i] <- 1 - exp(inprod(log(1-beta[i,1:spacenum]),I[t,1:spacenum]))
+    }
+  obs[t] ~ dbin(reporting,sum(I[t,1:spacenum]))
+  }
+}
