@@ -41,3 +41,5 @@ simCG <- function(beta = 0.02, N=100, effprop=0.9, i0=1, repshape=0.1,
   data.frame(time=tvec, S, I, R, Iobs)
   
 }
+
+sim <- simCG()
