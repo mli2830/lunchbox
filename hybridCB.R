@@ -5,7 +5,7 @@ options(mc.cores = parallel::detectCores())
 
 ## parameters -----
 source('paramsCB.R')
-
+iterations=4000
 ##creating the data ----
 
 source("CBsimulator.R")
@@ -34,7 +34,7 @@ params = c('beta',
            'effprop',
            'reporting')
 
-rjags::set.factory("bugs::Conjugate", FALSE, type="sampler")
+rjags::set.factory("bugs::Conjugate", TRUE, type="sampler")
 
 cbjags <- jags(data=data,
                inits=inits,
@@ -59,12 +59,12 @@ nimcb <- MCMCsuite(code=nimcode,
                    data=nimCBdata,
                    inits=nimCBinits,
                    constants=nimCBcon,
-                   MCMCs=c("jags","nimble"),
+                   MCMCs=c("jags","nimble","nimble_slice"),
                    monitors=c("beta","reporting","effprop"),
                    calculateEfficiency=TRUE,
-                   niter=10000,
-                   makePlot=TRUE,
-                   savePlot=TRUE)
+                   niter=4000,
+                   makePlot=FALSE,
+                   savePlot=FALSE)
 
 ## fit hybrid jags ----
 inits[[1]]$I <- inits[[1]]$I + zerohack
@@ -76,6 +76,7 @@ hybridjags <- jags(data=data,
                    n.iter = 8000,
                    n.chains = 1)
 
+quit()
 ## fit hybrid nimble ----
 
 source('nimhybrid.R')
@@ -93,12 +94,12 @@ nimhy <- MCMCsuite(code=nimcode,
                    data=nimhydata,
                    inits=nimhyinits,
                    constants=nimhycon,
-                   MCMCs=c("jags","nimble"),
+                   MCMCs=c("jags","nimble","nimble_slice"),
                    monitors=c("beta","reporting","effprop"),
                    calculateEfficiency=TRUE,
                    niter=8000,
-                   makePlot=TRUE,
-                   savePlot=TRUE)
+                   makePlot=FALSE,
+                   savePlot=FALSE)
 
 ## hybrid stan ----
 
@@ -130,8 +131,8 @@ allhybrids <- MCMCsuite(code=nimcode,
                    MCMCs=c("jags","nimble","stan"),
                    monitors=c("beta","reporting","effpropS","effpropI"),
                    niter=4000,
-                   makePlot=TRUE,
-                   savePlot=TRUE)
+                   makePlot=FALSE,
+                   savePlot=FALSE)
 
 ## fit CB nimble and hybrid stan ----
 source('nimCB.R')
@@ -151,11 +152,12 @@ nimcb <- MCMCsuite(code=nimcode,
                    inits=nimCBinits,
                    constants=nimCBcon,
                    stan_model="hybrid.stan",
-                   MCMCs=c("jags","nimble","stan"),
+                   MCMCs=c("jags","nimble","nimble_slice","stan"),
                    monitors=c("beta","reporting","effpropS","effpropI"),
-                   niter=4000,
-                   makePlot=TRUE,
-                   savePlot=TRUE)
+                   niter=6000,
+                   thin=3,
+                   makePlot=FALSE,
+                   savePlot=FALSE)
 
 nimmod <- nimbleModel(code=nimcode,data=nimCBdata,inits=nimCBinits,constants=nimCBcon)
 cmod <- configureMCMC(nimmod,print=TRUE)

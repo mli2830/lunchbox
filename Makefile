@@ -1,3 +1,6 @@
+make:	paramsCB.R CBsimulator.R CB.bug nimCB.R hybrid.bug
+	R CMD BATCH hybridCB.R
+
 snack:	JagsCB.Rout
 	less JagsCB.Rout
 

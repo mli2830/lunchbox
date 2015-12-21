@@ -29,8 +29,8 @@ inits <- list(list(I = sim$I,
                    reporting = reporting))
 
 
-data$obs = data$obs+zerohack
-inits[[1]]$I <- inits[[1]]$I + zerohack
+data$obs = data$obs
+#inits[[1]]$I <- inits[[1]]$I + zerohack
 
 
 params = c('beta',
