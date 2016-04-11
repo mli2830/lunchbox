@@ -1,12 +1,22 @@
-model: (chain binomial, hybrid chain binomial [also called chain-gamma by ML], decorrelated CB (JD's trick for decorrelating observation and process uncertainty) + observation error
+- process error: chain beta-binomial
+- observation error: chain beta-binomial
+i.e.
+```
+foi[t]  <- (1-(1-p)^I) # susceptible prob/generation of infection
+I[t]    ~  dbetabinom(S[t-1],foi[t],phi1)
+S[t]    <- S[t-1]-I[t]
+Iobs[t] ~  dbetabinom(I[t],phi2)
+```
+
+- fitting model: (**chain X**, **hybrid chain X [moment-matching/chain-gamma]**, decorrelated hybrid chain X (JD's trick for decorrelating observation and process uncertainty)
 
 x
 
-generalized distribution of cases: binomial, beta-binomial, Poisson, neg bin
+generalized distribution of cases (X): **binomial**, **beta-binomial**, Poisson, neg bin
 
 x
 
-platform: PyMC, Stan, JAGS (NIMBLE)? pomp? Dexter's code?
+platform: PyMC, Stan, **JAGS** (NIMBLE)? pomp? Dexter's code?
 
 x
 
@@ -32,3 +42,4 @@ To do:
   - pomp chain binomial?
   
 -------
+[JAGS macros](http://stats.stackexchange.com/questions/85690/how-to-conditionally-run-element-of-jags-script-based-on-user-supplied-variable)
