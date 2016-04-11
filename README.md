@@ -27,6 +27,8 @@ To do:
       - objective/loss function: parameter estimates? forecasts?
   - write out generalized distribution definition (JD? BMB?)
   - talking points for introduction and discussion
-      - Lekone & Finkenstadt, Scottish guy who does continuous-time stochastic SIR estimation    
+      - Lekone & Finkenstadt, Gavin Gibson (Steftaris and Gibson, Gibson and Renshaw)
       - Aaron King comment about IF2 > MCMC for epidemics?
-  - pomp CB? 
+  - pomp chain binomial?
+  
+-------
