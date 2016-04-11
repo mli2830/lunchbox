@@ -27,8 +27,18 @@ left out (for now) from Ebola models:
   - generation interval (multi-generation) 
   - saturation/behaviour effects
 
---
-To do:
+
+## To do
+
+### Now(ish)
+
+- CP: write a pipeline skeleton; runs factorial combinations, to be specified as input/config files; generate (non)supercomputer script; run different commands (R vs Python) based on config script
+- ML: clean up repo; make sure all cases on all platforms work (JAGS-via-NIMBLE, binomial or beta-binomial (process or observation error)
+- JD: support Mike and Carl
+- BB: ???
+
+### Lower priority
+
   - get PyMC running (ML)
   - write up hybridization/decorrelation definitions (JD)
   - decide on fake data
@@ -41,5 +51,7 @@ To do:
       - Aaron King comment about IF2 > MCMC for epidemics?
   - pomp chain binomial?
   
--------
-[JAGS macros](http://stats.stackexchange.com/questions/85690/how-to-conditionally-run-element-of-jags-script-based-on-user-supplied-variable)
+
+##  Miscellaneous junk
+
+- [JAGS macros](http://stats.stackexchange.com/questions/85690/how-to-conditionally-run-element-of-jags-script-based-on-user-supplied-variable)
