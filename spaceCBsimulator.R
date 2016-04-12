@@ -10,7 +10,7 @@
 ##' @param seed random number seed
 ##' @param reporting observation probability (1 by default)
 ##' @return a data frame with columns (time, S, I, R, Iobs, pSI) 
-simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0.9, i0=1,
+simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.00, N1=100, N2=100, effprop=0.9, i0=1,
                         t0=1, numobs=20, reporting=1, seed=NULL){
   
   ## *all* infecteds recover in the next time step
@@ -18,17 +18,16 @@ simspaceCB <- function(spacenum = 1,betaw = 0.02, betab = 0.01, N=100, effprop=0
   if (!is.null(seed)) set.seed(seed)
   tvec <- seq(1,numobs)
   n <- length(tvec)
-  S  <- I <- pSI <- matrix(0,ncol=spacenum,nrow=numobs)
+  S  <- I <- pSI <- R <- Iobs <- matrix(0,ncol=spacenum,nrow=numobs)
   beta <- matrix(betab,nrow=spacenum, ncol=spacenum)
-  R <- Iobs <- numeric(numobs)
   #  pSI <- I <-array(0,dim=c(numobs,spacenum,spacenum))
   
   
   ##Initial conditions
   N0 <- round(effprop*N)
-  I[1,1] <- i0 
+  I[1,] <- 1
   S[1,] <- round(N0/spacenum)
-  S[1,1] <- S[1,1]-I[1,1]
+  S[1,] <- S[1,]-I[1,]
   R[1] <- N-N0
   pSI[1,] <- 0
   for(i in 1:spacenum){

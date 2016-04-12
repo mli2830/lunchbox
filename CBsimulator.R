@@ -8,7 +8,7 @@
 ##' @param seed random number seed
 ##' @param reporting observation probability (1 by default)
 ##' @return a data frame with columns (time, S, I, R) 
-simCB <- function(beta = 0.02, N=100, effprop=0.9, i0=1,
+simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
                   t0=1, numobs=20, reporting=1, seed=NULL){
   
   ## *all* infecteds recover in the next time step

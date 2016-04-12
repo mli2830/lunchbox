@@ -3,6 +3,8 @@ options(mc.cores = parallel::detectCores())
 
 rjags::set.factory("bugs::Conjugate", TRUE, type="sampler")
 
+inits=""
+
 Jagsmod <- jags.model(file="CB.bug",data=data,inits=inits)
 
 list.samplers(Jagsmod)

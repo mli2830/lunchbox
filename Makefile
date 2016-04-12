@@ -1,34 +1,30 @@
-make:	paramsCB.R CBsimulator.R CB.bug nimCB.R hybrid.bug
-	R CMD BATCH hybridCB.R
+##This is a Makefile
 
-snack:	JagsCB.Rout
-	less JagsCB.Rout
+target pngtarget pdftarget vtarget acrtarget: simdat.Rout
 
-lunch: NimbleCB.Rout
-	less NimbleCB.Rout
+##################################################################
 
-###########################################################
 
-###Simulate data
+Sources += Makefile stuff.mk
+include stuff.mk
+-include $(ms)/git.def
 
-simdata.RData: paramsCB.R CBsimulator.R simulateCB.R
-	       R CMD BATCH simulateCB.R
+simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
+	     $(run-R)
 
-###########################################################
-## FITTING MCMC
-### fit jags cb
 
-JagsCB.Rout: simdata.RData CB.bug JagsCB.R
-	     R CMD BATCH JagsCB.R
 
-### fit nimble cb
+#############
+Sources += $(wildcard *.R)
+Sources += $(Released/*.csv)
 
-NimbleCB.Rout: simdata.RData nimCB.R nimCB2.R NimbleCB.R
-	       R CMD BATCH NimbleCB.R
-		
-		
 
-### fit jags hybrid
 
-Jagshybrid.Rout: simdata.RData hybrid.bug Jagshybrid.R
-		 R CMD BATCH Jagshybrid.R
+
+Sources += $(wildcard notes/*.txt) $(wildcard notes/*.md)
+
+-include $(ms)/git.mk
+-include $(ms)/visual.mk
+-include $(ms)/linux.mk
+-include $(ms)/wrapR.mk
+-include rmd.mk
