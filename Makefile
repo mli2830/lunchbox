@@ -1,8 +1,8 @@
 ##This is a Makefile
 
-target: simdat.Rout 
+target: Jags.fit.Rout 
 
-target pngtarget pdftarget vtarget acrtarget: simdat.Rout 
+target pngtarget pdftarget vtarget acrtarget: Jags.fit.Rout 
 
 ##################################################################
 
@@ -15,7 +15,7 @@ beta.Rout: beta.R
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
 	$(run-R)
 
-Nimble.fit.Rout:
+Jags.fit.Rout: CB.bug
 
 %.fit.Rout: simdat.Rout paramsCB.R %.CB.R
 	$(run-R)

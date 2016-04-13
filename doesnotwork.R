@@ -1,3 +1,4 @@
+## Don't look at this file, you moron
 require(nimble)
 options(mc.cores = parallel::detectCores())
 source('nimCB.R')
