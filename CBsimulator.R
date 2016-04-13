@@ -39,11 +39,11 @@ simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
   ## Generate the Unobserved process I, and observables:
   
   for (t in 2:n){
-    I[t] <- rbinom(1,prob=pSI[t-1],size=S[t-1])
+    I[t] <- rbbinom(1,prob=pSI[t-1],k=repSize,size=S[t-1])
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]
     pSI[t] <- 1 - (1-beta)^I[t]
-  		Iobs[t] <- rbbinom(1, prob=repMean, k=repSize, size=I[t])
+  	Iobs[t] <- rbbinom(1, prob=repMean, k=repSize, size=I[t])
   }
   
   data.frame(time=tvec, S, I, R, Iobs)

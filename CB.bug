@@ -10,10 +10,9 @@ N0 ~ dbin(effprop,N)
 I[1] ~ dbin(1,i0)
 S[1] <- N0 - I[1]
 pSI[1] <- 1 - (1-beta)^I[1]
-obs[1] ~ dbin(repMean , I[1])
+mtilde[1] ~ dbeta(k/(1-prob), k/prob)
+obs[1] ~ dbin(mtilda[1] , I[1])
 
-##obs1[1] ~ dpois(obs1[1]*repMean+1)
-                 
 for(t in 2:numobs){
   I[t] ~ dbin(pSI[t-1],S[t-1])
   S[t] <- S[t-1] - I[t]
