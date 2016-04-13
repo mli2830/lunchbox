@@ -1,4 +1,8 @@
 ##' Basic chain binomial simulator
+## Reed-Frost
+## e.g. see http://depts.washington.edu/sismid09/software/Module_7/reedfrost.R
+## or the somewhat lame Wikipedia page
+
 ##' @param beta prob. of adequate contact per infective
 ##' @param population size
 ##' @param effprop initial effective proportion of population
@@ -8,8 +12,14 @@
 ##' @param seed random number seed
 ##' @param reporting observation probability (1 by default)
 ##' @return a data frame with columns (time, S, I, R) 
+
+rbbinom <- function(n, prob, k, size){
+	mtilde <- rbeta(n, k/(1-prob), k/prob)
+	return(rbinom(n, prob=mtilde, size=size))
+}
+
 simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
-                  t0=1, numobs=20, reporting=1, seed=NULL){
+                  t0=1, numobs=20, repMean=0.5, repSize=10, seed=NULL){
   
   ## *all* infecteds recover in the next time step
   
@@ -24,9 +34,7 @@ simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
   S[1] <- N0 - i0
   R[1] <- N-N0
   pSI[1] <- 1 - (1-beta)^I[1]
-  Iobs[1] <- rbinom(1,prob=reporting,size=I[1])## Reed-Frost
-  ## e.g. see http://depts.washington.edu/sismid09/software/Module_7/reedfrost.R
-  ## or the somewhat lame Wikipedia page
+  Iobs[1] <- rbbinom(1, prob=repMean, k=repSize, size=I[1])
   
   ## Generate the Unobserved process I, and observables:
   
@@ -35,7 +43,7 @@ simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]
     pSI[t] <- 1 - (1-beta)^I[t]
-    Iobs[t] <- rbinom(1,prob=reporting,size=I[t])
+  		Iobs[t] <- rbbinom(1, prob=repMean, k=repSize, size=I[t])
   }
   
   data.frame(time=tvec, S, I, R, Iobs)

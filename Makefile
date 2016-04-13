@@ -1,18 +1,23 @@
 ##This is a Makefile
 
-target pngtarget pdftarget vtarget acrtarget: Pymc.fit
+target: simdat.Rout 
+
+target pngtarget pdftarget vtarget acrtarget: simdat.Rout 
 
 ##################################################################
-
 
 Sources += Makefile stuff.mk
 include stuff.mk
 -include $(ms)/git.def
 
+beta.Rout: beta.R
+
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
 	$(run-R)
 
-%.fit.Rout: simdat.Rout paramsCB.R %CB.R
+Nimble.fit.Rout:
+
+%.fit.Rout: simdat.Rout paramsCB.R %.CB.R
 	$(run-R)
 
 Pymc.fit: PymcCB.py
@@ -20,12 +25,6 @@ Pymc.fit: PymcCB.py
 
 #############
 Sources += $(wildcard *.R)
-Sources += $(Released/*.csv)
-
-
-
-
-Sources += $(wildcard notes/*.txt) $(wildcard notes/*.md)
 
 -include $(ms)/git.mk
 -include $(ms)/visual.mk
