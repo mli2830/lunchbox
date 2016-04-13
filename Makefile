@@ -1,6 +1,6 @@
 ##This is a Makefile
 
-target pngtarget pdftarget vtarget acrtarget: Jagsfit.Rout
+target pngtarget pdftarget vtarget acrtarget: Jags.fit.Rout
 
 ##################################################################
 
