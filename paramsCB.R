@@ -4,7 +4,7 @@ i0 <- 1
 effprop <- 0.10
 reporting <- 0.8
 N0 <- round(N*effprop)
-numobs <- 20
+numobs <- 10
 iterations=8000
 seed=101
 
