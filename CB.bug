@@ -1,7 +1,7 @@
 model{
 
 ## parameter priors
-reporting ~ dunif(0,1)
+repMean ~ dunif(0,1)
 effprop ~ dunif(0,1)
 beta ~ dunif(0,0.2)
 
@@ -10,15 +10,15 @@ N0 ~ dbin(effprop,N)
 I[1] ~ dbin(1,i0)
 S[1] <- N0 - I[1]
 pSI[1] <- 1 - (1-beta)^I[1]
-obs[1] ~ dbin(reporting , I[1])
+obs[1] ~ dbin(repMean , I[1])
 
-##obs1[1] ~ dpois(obs1[1]*reporting+1)
+##obs1[1] ~ dpois(obs1[1]*repMean+1)
                  
 for(t in 2:numobs){
   I[t] ~ dbin(pSI[t-1],S[t-1])
   S[t] <- S[t-1] - I[t]
   pSI[t] <- 1 - (1-beta)^I[t]
-  obs[t] ~ dbin(reporting,I[t])
-##  obs1[t] ~ dpois(reporting*obs1[t]+1)
+  obs[t] ~ dbin(repMean,I[t])
+##  obs1[t] ~ dpois(repMean*obs1[t]+1)
   }
 }

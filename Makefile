@@ -24,7 +24,7 @@ Pymc.fit: PymcCB.py
 	python PymcCB.py
 
 #############
-Sources += $(wildcard *.R)
+Sources += $(wildcard *.R *.bug)
 
 -include $(ms)/git.mk
 -include $(ms)/visual.mk
