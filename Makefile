@@ -12,8 +12,8 @@ include stuff.mk
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
 	     $(run-R)
 
-Jagsfit.Rout: simdat.Rout paramsCB.R JagsCB.R
-	      $(run-R)
+%.fit.Rout: simdat.Rout paramsCB.R %CB.R
+	   $(run-R)
 
 
 #############

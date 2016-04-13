@@ -2,15 +2,9 @@ require(nimble)
 options(mc.cores = parallel::detectCores())
 source('nimCB.R')
 nimbleOptions(verifyConjugatePosteriors=TRUE)
-nimCBdata <- list(obs=sim$Iobs)
-nimCBcon <- list(numobs=numobs,N=N,i0=i0)
-
-nimCBinits <- list(I=sim$I,
-                   effprop=effprop,
-                   beta=beta,
-                   reporting=reporting,
-                   N0=N0
-)
+nimCBdata <- lme4:::namedList(obs=sim$Iobs)
+nimCBcon <- lme4:::namedList(numobs,N,i0)
+nimCBinits <- lme4:::namedList(I=sim$I,effprop,beta,reporting,N0)
 
 nimmod <- nimbleModel(code=nimcode,constants=nimCBcon, data=nimCBdata,
                       inits=nimCBinits)
@@ -22,9 +16,9 @@ NimbleCB <- MCMCsuite(code=nimcode,
                    inits=nimCBinits,
                    constants=nimCBcon,
                    MCMCs=c("jags","nimble","nimble_slice"),
-                   monitors=c("beta","reporting","effprop"),
+                   monitors=params,
                    calculateEfficiency=TRUE,
-                   niter=10000,
+                   niter=iterations,
                    makePlot=FALSE,
                    savePlot=FALSE,
                    setSeed=5)
@@ -56,6 +50,4 @@ print(NimbleCB2$summary)
 
 
 
-saveRDS(NimbleCB,file="NimbleCB")
-saveRDS(NimbleCB2,file="NimbleCB2")
-
+# rdsave(NimbleCB,NimbleCB2) 
