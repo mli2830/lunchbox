@@ -1,6 +1,6 @@
 ##This is a Makefile
 
-target pngtarget pdftarget vtarget acrtarget: Jags.fit.Rout
+target pngtarget pdftarget vtarget acrtarget: Pymc.fit
 
 ##################################################################
 
@@ -10,11 +10,13 @@ include stuff.mk
 -include $(ms)/git.def
 
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
-	     $(run-R)
+	$(run-R)
 
 %.fit.Rout: simdat.Rout paramsCB.R %CB.R
-	   $(run-R)
+	$(run-R)
 
+Pymc.fit: PymcCB.py
+	python PymcCB.py
 
 #############
 Sources += $(wildcard *.R)
