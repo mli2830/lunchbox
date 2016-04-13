@@ -1,6 +1,6 @@
 ##This is a Makefile
 
-target pngtarget pdftarget vtarget acrtarget: simdat.Rout
+target pngtarget pdftarget vtarget acrtarget: Jagsfit.Rout
 
 ##################################################################
 
@@ -12,6 +12,8 @@ include stuff.mk
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
 	     $(run-R)
 
+Jagsfit.Rout: simdat.Rout paramsCB.R JagsCB.R
+	      $(run-R)
 
 
 #############

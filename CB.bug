@@ -10,15 +10,15 @@ N0 ~ dbin(effprop,N)
 I[1] ~ dbin(1,i0)
 S[1] <- N0 - I[1]
 pSI[1] <- 1 - (1-beta)^I[1]
-obs1[1] ~ dbin(reporting , I[1])
+obs[1] ~ dbin(reporting , I[1])
 
-obs[1] ~ dpois(obs1[1]*reporting+1)
+##obs1[1] ~ dpois(obs1[1]*reporting+1)
                  
 for(t in 2:numobs){
   I[t] ~ dbin(pSI[t-1],S[t-1])
   S[t] <- S[t-1] - I[t]
   pSI[t] <- 1 - (1-beta)^I[t]
-  obs1[t] ~ dbin(reporting,I[t])
-  obs[t] ~ dpois(reporting*obs1[t]+1)
+  obs[t] ~ dbin(reporting,I[t])
+##  obs1[t] ~ dpois(reporting*obs1[t]+1)
   }
 }
