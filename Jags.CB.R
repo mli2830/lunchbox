@@ -1,9 +1,14 @@
 require(R2jags)
 # options(mc.cores = parallel::detectCores())
 
-data <- lme4:::namedList(obs=sim$Iobs,N,i0,numobs)
-inits <- list(lme4:::namedList(I=sim$I,effprop,beta,N0,repMean))
+data <- lme4:::namedList(obs=sim$Iobs,N,i0,numobs,reppSize=repSize,
+                         repobsSize=repSize,esp)
+inits <- list(lme4:::namedList(I=sim$I,reppa=sim$pSI,effprop,beta,N0,repMean,
+                               reppb=sim$pSI, repobsa=sim$pSI,
+                               repobsb=sim$pSI))
 params <- c("beta","effprop","repMean")
+
+print(inits)
 
 Jagsmod <- jags.model(file="CB.bug",data=data,inits=inits)
 

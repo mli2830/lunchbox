@@ -10,14 +10,23 @@ N0 ~ dbin(effprop,N)
 I[1] ~ dbin(1,i0)
 S[1] <- N0 - I[1]
 pSI[1] <- 1 - (1-beta)^I[1]
-mtilde[1] ~ dbeta(k/(1-prob), k/prob)
-obs[1] ~ dbin(mtilda[1] , I[1])
+reppa[1] ~ dgamma(reppSize/(1-pSI[1]),1)
+reppb[1] ~ dgamma(reppSize/(pSI[1]+esp),1)
+repobsa[1] ~ dgamma(repobsSize/(1-repMean), 1)
+repobsb[1] ~ dgamma(repobsSize/(repMean), 1)
+obs[1] ~ dbin(repobsa[1]/(repobsa[1]+repobsb[1]) , I[1])
 
 for(t in 2:numobs){
-  I[t] ~ dbin(pSI[t-1],S[t-1])
+  I[t] ~ dbin(reppa[t-1]/(reppa[t-1]+reppb[t-1]),S[t-1])
+  ##  I[t] ~ dbin(bpSI[t-1],S[t-1])
   S[t] <- S[t-1] - I[t]
   pSI[t] <- 1 - (1-beta)^I[t]
-  obs[t] ~ dbin(repMean,I[t])
-##  obs1[t] ~ dpois(repMean*obs1[t]+1)
+  ##  bpSI[t] ~ dbeta(repSize/(1-pSI[t]),repSize/(pSI[t]))
+  reppa[t] ~ dgamma(reppSize/(1-pSI[t]+esp),1)
+  reppb[t] ~ dgamma(reppSize/(pSI[t]+esp),1)
+  ##  mtilde[t] ~ dbeta(repSize/(1-repMean), repSize/repMean)
+  repobsa[t] ~ dgamma(repobsSize/(1-repMean), 1)
+  repobsb[t] ~ dgamma(repobsSize/repMean, 1)
+  obs[t] ~ dbin(repobsa[t]/(repobsa[t]+repobsb[t]) , I[t])
   }
 }

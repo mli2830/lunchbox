@@ -46,6 +46,6 @@ simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
   	Iobs[t] <- rbbinom(1, prob=repMean, k=repSize, size=I[t])
   }
   
-  data.frame(time=tvec, S, I, R, Iobs)
+  data.frame(time=tvec, S, I, R, Iobs,pSI)
   
 }
