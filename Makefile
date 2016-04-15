@@ -15,8 +15,7 @@ beta.Rout: beta.R
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
 	$(run-R)
 
-Jags.fit.Rout: CB.bug
-
+Jags.fit.Rout: CB.bug Jags.CB.R
 %.fit.Rout: simdat.Rout paramsCB.R %.CB.R
 	$(run-R)
 
