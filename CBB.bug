@@ -1,7 +1,7 @@
 model{
 	## Change these uniforms to betas
-	repMean ~ dunif(0,1)
-	effprop ~ dunif(0,1)
+	repMean ~ dbeta(1,1)
+	effprop ~ dbeta(1,1)
 
 	## This may be a bad prior
 	R0 ~ dgamma(1,1)
