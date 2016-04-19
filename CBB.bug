@@ -9,14 +9,12 @@ model{
 	N0 ~ dbin(effprop,N)
 
 	## This one should probably be negative binomial
-	I[1] ~ dbin(1,i0)
+	I[1] ~ dbin(0.7,i0)
 	S[1] <- N0 - I[1]
 
 	for(t in 2:numobs){
 		I[t] ~ dbin(reppa[t-1]/(reppa[t-1]+reppb[t-1]),S[t-1])
-		##	I[t] ~ dbin(bpSI[t-1],S[t-1])
 		S[t] <- S[t-1] - I[t]
-		##	bpSI[t] ~ dbeta(repSize/(1-pSI[t]),repSize/(pSI[t]))
 	}
 
 	beta <- 1-exp(-R0/N0)

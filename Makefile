@@ -15,8 +15,9 @@ beta.Rout: beta.R
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
 	$(run-R)
 
-Jags.fit.Rout: CB.bug Jags.CB.R
-%.fit.Rout: simdat.Rout paramsCB.R %.CB.R
+Jags.CB.fit.Rout: CB.bug Jags.CB.R
+Jags.CBB.fit.Rout: CBB.bug Jags.CBB.R
+Jags.%.fit.Rout: simdat.Rout paramsCB.R Jags.%.R
 	$(run-R)
 
 Pymc.fit: PymcCB.py
