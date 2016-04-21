@@ -10,8 +10,6 @@ Sources += Makefile stuff.mk
 include stuff.mk
 -include $(ms)/git.def
 
-beta.Rout: beta.R
-
 simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
 	$(run-R)
 
