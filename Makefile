@@ -1,6 +1,6 @@
 ##This is a Makefile
 
-target: Jags.fit.Rout 
+target: Pymc.fit
 
 target pngtarget pdftarget vtarget acrtarget: Jags.fit.Rout 
 

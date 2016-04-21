@@ -1,4 +1,7 @@
 
 *~
 *.RData
-*
+.*
+*.wrapR.r
+makestuff/
+*.Rout
