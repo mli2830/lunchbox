@@ -1,6 +1,6 @@
 ##This is a Makefile
 
-target: Pymc.fit
+target: Jags.CBB.fit.Rout
 
 target pngtarget pdftarget vtarget acrtarget: Jags.fit.Rout 
 
@@ -10,7 +10,7 @@ Sources += Makefile stuff.mk
 include stuff.mk
 -include $(ms)/git.def
 
-simdat.Rout: CBsimulator.R paramsCB.R simulateCB.R
+simdat.Rout: simulator.CBB.R params.CBB.R simulate.CBB.R
 	$(run-R)
 
 Jags.CB.fit.Rout: CB.bug Jags.CB.R
