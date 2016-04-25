@@ -25,13 +25,13 @@ print(length(inits))
 
 # list.samplers(Jagsmod)
 
-JagsCB <- jags(data=data,
+JagsCBB <- jags(data=data,
                inits=inits,
                param = params,
                model.file = "CBB.bug",
                n.iter = iterations,
                n.chains = length(inits))
 
-print(JagsCB)
+print(JagsCBB)
 
-# rdsave(JagsCB)
+# rdsave(JagsCBB)

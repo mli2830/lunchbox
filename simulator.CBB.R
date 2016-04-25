@@ -18,7 +18,7 @@ rbbinom <- function(n, prob, k, size){
   return(rbinom(n, prob=mtilde, size=size))
 }
 
-simm <- function(R0 = 5, N=10000, effprop=0.9, i0=1,
+simm <- function(R0 = 2, N=10000, effprop=0.9, i0=1,
                   t0=1, numobs=20, repMean=0.5, repSize=10, seed=NULL){
   
   ## *all* infecteds recover in the next time step
