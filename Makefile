@@ -10,9 +10,12 @@ Sources += Makefile stuff.mk
 include stuff.mk
 -include $(ms)/git.def
 
+sim.CBB.Rout: simulator.CBB.R parameters.CBB.R simulate.CBB.R
+	      $(run-R)
+
 Jags.CB.fit.Rout: CB.bug Jags.CB.R
 Jags.CBB.fit.Rout: CBB.bug Jags.CBB.R
-Jags.%.fit.Rout: simulator.CBB.R parameters.CBB.R simulate.CBB.R Jags.%.R
+Jags.%.fit.Rout: sim.CBB.Rout parameters.CBB.R Jags.%.R
 	$(run-R)
 
 Pymc.fit: PymcCB.py
