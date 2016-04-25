@@ -14,8 +14,8 @@
 ##' @return a data frame with columns (time, S, I, R) 
 
 rbbinom <- function(n, prob, k, size){
-	mtilde <- rbeta(n, k/(1-prob), k/prob)
-	return(rbinom(n, prob=mtilde, size=size))
+  mtilde <- rbeta(n, k/(1-prob), k/prob)
+  return(rbinom(n, prob=mtilde, size=size))
 }
 
 simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
@@ -43,7 +43,7 @@ simCB <- function(beta = 0.02, N=10000, effprop=0.9, i0=1,
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]
     pSI[t] <- 1 - (1-beta)^I[t]
-  	Iobs[t] <- rbbinom(1, prob=repMean, k=repSize, size=I[t])
+    Iobs[t] <- rbbinom(1, prob=repMean, k=repSize, size=I[t])
   }
   
   data.frame(time=tvec, S, I, R, Iobs,pSI)
