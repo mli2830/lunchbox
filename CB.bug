@@ -4,17 +4,17 @@ model{
 	effprop ~ dbeta(1,1)
 	
 	## This may be a bad prior
-	R0 ~ dgamma(1,1)
+	lambda ~ dgamma(2,1)
 
 	## This one should probably be negative binomial
 	N0 ~ dbin(effprop,N)
 
 	I[1] ~ dbin(0.5,i0)
 	S[1] <- N0 - I[1]
-	beta <- 1-exp(-R0/N0)
+	beta <- exp(-lambda/S[1])
 
 	for(t in 1:numobs){
-		pSI[t] <- 1 - exp(I[t]*log(1-beta))
+		pSI[t] <- 1 - exp(I[t]*log(beta))
 		I[t+1] ~ dbin(pSI[t],S[t])
 		S[t+1] <- S[t] - I[t+1]
 		obs[t] ~ dbin(repMean,I[t]) 
