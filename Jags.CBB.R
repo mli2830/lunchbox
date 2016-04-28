@@ -28,7 +28,7 @@ print(length(inits))
 JagsCBB <- jags(data=data,
                inits=inits,
                param = params,
-               model.file = "CBB.bug",
+               model.file = "BB.BB.bug",
                n.iter = iterations,
                n.chains = length(inits))
 

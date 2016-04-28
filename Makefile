@@ -17,9 +17,11 @@ sim.%.Rout: simulator.%.R parameters.CBB.R simulate.%.R
 
 B.B.Rout: process.B.R observation.B.R bugs_template.R
 	  $(run-R)
+BB.BB.Rout: process.BB.R observation.BB.R bugs_template.R
+	    $(run-R)
 
 Jags.CB.fit.Rout: B.B.bug Jags.CB.R
-Jags.CBB.fit.Rout: CB.bug Jags.CBB.R
+Jags.CBB.fit.Rout: BB.BB.bug Jags.CBB.R
 Jags.CP.fit.Rout: CP.bug Jags.CP.R
 Jags.%.fit.Rout: sim.CBB.Rout parameters.CBB.R Jags.%.R
 	$(run-R)
