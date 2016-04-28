@@ -2,13 +2,9 @@ require(R2jags)
 # options(mc.cores = parallel::detectCores())
 
 mult <- 1:4
-data <- lme4:::namedList(obs=sim$Iobs,N,i0=6,numobs,pSISize=repSize,
-                         repobsSize=repSize,eps
-)
+data <- lme4:::namedList(obs=sim$Iobs,N,i0=5,numobs)
 
-iList <- lme4:::namedList(
-  pSIa=sim$pSI,effprop=0.7,R0,N0,repMean=0.5,
-  pSIb=sim$pSI, repobsa=repMean, repobsb=repMean
+iList <- lme4:::namedList(R0,effprop=0.9,N0,repMean=0.5
 )
 
 
@@ -25,13 +21,13 @@ print(length(inits))
 
 # list.samplers(Jagsmod)
 
-JagsCBB <- jags(data=data,
+JagsCP <- jags(data=data,
                inits=inits,
                param = params,
-               model.file = "CBB.bug",
+               model.file = "CP.bug",
                n.iter = iterations,
                n.chains = length(inits))
 
-print(JagsCBB)
+print(JagsCP)
 
-# rdsave(JagsCBB)
+# rdsave(JagsCP)

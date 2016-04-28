@@ -9,7 +9,7 @@ iList <- lme4:::namedList(R0,effprop=0.9,N0,repMean=0.5
 
 
 inits <- lapply (mult, function(m){
-	return(c(iList, list(I = c(m+sim$Iobs,1))))
+	return(c(iList, list(I = c(m+sim$Iobs))))
 })
 
 params <- c("R0","effprop","repMean")

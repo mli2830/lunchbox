@@ -1,15 +1,18 @@
 model{
   ## Change these uniforms to betas
   repMean ~ dbeta(1,1)
-  beta ~ dunif(0,0.2)
+  effprop ~ dbeta(1,1)
   
-  I[1] ~ dpois(i0)
-  pSI[1] <- 1 - exp(I[1]*log(1-beta))
-  obs[1] ~ dpois(I[1]*repMean)
+  R0 ~ dgamma(2,1)
+  N0 ~ dbin(effprop,N)
   
-  for(t in 2:numobs){
-    I[t] ~ dpois(I[i-1]*pSI[i-1])
-    pSI[t] <- 1 - exp(I[t]*log(1-beta))
-    obs[t] ~ dpois(I[t]*repMean) 
+  S[1] <- N0 - i0
+  IMean[1] <- i0*R0*(S[1]/N0)
+  
+  for(t in 1:numobs){
+    I[t] ~ dpois(IMean[t])
+    obs[t] ~ dpois(I[t]*repMean)
+    IMean[t+1] <- I[t]*R0*(S[t]/N0)
+    S[t+1] <- S[t] - I[t]
   }
 }

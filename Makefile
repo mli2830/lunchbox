@@ -17,6 +17,7 @@ sim.%.Rout: simulator.%.R parameters.CBB.R simulate.%.R
 
 Jags.CB.fit.Rout: CB.bug Jags.CB.R
 Jags.CBB.fit.Rout: CBB.bug Jags.CBB.R
+Jags.CP.fit.Rout: CP.bug Jags.CP.R
 Jags.%.fit.Rout: sim.CBB.Rout parameters.CBB.R Jags.%.R
 	$(run-R)
 

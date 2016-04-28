@@ -12,16 +12,21 @@ model{
 	I[1] ~ dbin(0.5,i0)
 	S[1] <- N0 - I[1]
 	beta <- exp(-R0/N0)
+  repobsa ~ dgamma(repobsSize/(1-repMean), 1)
+	repobsb ~ dgamma(repobsSize/repMean, 1)
+	reporting <- repobsa/(repobsa + repobsb)
+	obs[1] ~ dbin(reporting , I[1])
+	pSI[1] <- 1 - exp(I[1]*log(beta))+eps
+	pSIa[1] ~ dgamma(pSISize/(1-pSI[1]),1)
+	pSIb[1] ~ dgamma(pSISize/(pSI[1]),1)
+	  
 
-
-	for(t in 1:numobs){
-	  repobsa[t] ~ dgamma(repobsSize/(1-repMean), 1)
-	  repobsb[t] ~ dgamma(repobsSize/repMean, 1)
-	  obs[t] ~ dbin(repobsa[t]/(repobsa[t]+repobsb[t]) , I[t])
-	  pSI[t] <- 1 - exp(I[t]*log(beta)) +eps
+	for(t in 2:numobs){
+	  I[t] ~ dbin(pSIa[t-1]/(pSIa[t-1]+pSIb[t-1]),S[t-1])
+	  obs[t] ~ dbin(reporting , I[t])
+	  pSI[t] <- 1 - exp(I[t]*log(beta))+eps
 	  pSIa[t] ~ dgamma(pSISize/(1-pSI[t]),1)
 	  pSIb[t] ~ dgamma(pSISize/(pSI[t]),1)
-	  I[t+1] ~ dbin(pSIa[t]/(pSIa[t]+pSIb[t]),S[t])
-	  S[t+1] <- S[t] - I[t+1]	
+	  S[t] <- S[t-1] - I[t]	
 	}
 }
