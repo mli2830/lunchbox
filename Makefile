@@ -1,8 +1,8 @@
 ##This is a Makefile
 
-target: B.B.Rout
+target: Jags.B.B.fit.Rout
 
-target pngtarget pdftarget vtarget acrtarget: Jags.fit.Rout 
+target pngtarget pdftarget vtarget acrtarget: Jags.B.B.fit.Rout
 
 ##################################################################
 
@@ -23,7 +23,7 @@ BB.BB.Rout: process.BB.R observation.BB.R bugs_template.R
 Jags.CB.fit.Rout: B.B.bug Jags.CB.R
 Jags.CBB.fit.Rout: BB.BB.bug Jags.CBB.R
 Jags.CP.fit.Rout: CP.bug Jags.CP.R
-Jags.%.fit.Rout: sim.CBB.Rout parameters.CBB.R Jags.%.R
+Jags.B.%.fit.Rout: sim.CBB.Rout B.%.Rout parameters.CBB.R B.%.bug Jags.Discrete.R
 	$(run-R)
 
 Pymc.fit: PymcCB.py
