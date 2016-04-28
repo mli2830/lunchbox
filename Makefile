@@ -10,8 +10,10 @@ Sources += Makefile stuff.mk
 include stuff.mk
 -include $(ms)/git.def
 
-sim.CBB.Rout: simulator.CBB.R parameters.CBB.R simulate.CBB.R
-	      $(run-R)
+sim.CBB.Rout: simulate.CBB.R
+sim.CP.Rout: simulate.CP.R
+sim.%.Rout: simulator.%.R parameters.CBB.R simulate.%.R
+	    $(run-R)
 
 Jags.CB.fit.Rout: CB.bug Jags.CB.R
 Jags.CBB.fit.Rout: CBB.bug Jags.CBB.R

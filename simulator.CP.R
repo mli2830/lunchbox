@@ -6,37 +6,35 @@ library(ggplot2)
 ##' @param seed random number seed
 ##' @param reporting observation probability (1 by default)
 
-simm <- function(beta=0.8,i0=1,t0=1, numobs=10, shapeP=0.1, R0=2,
-                 repMean=0.5, repSize=10, seed=NULL){
+simm <- function(R0=2,i0=1,t0=1, numobs=10, N=1000, effprop=0.9,
+                 repMean=0.5, seed=NULL){
   
   ## *all* infecteds recover in the next time step
   
   if (!is.null(seed)) set.seed(seed)
   tvec <- seq(1,numobs)
   n <- length(tvec)
-  I <- Iobs <- IMean <- pSI <- numeric(n)
-  R <- R0
+  I <- Iobs <- IMean <- pSI <- S <- R <- numeric(n)
   
   ##Initial conditions
+  
+  N0 <- round(effprop*N)
   I[1] <- i0
-#  pShape <- rgamma(1,shape=shapeP,rate=shapeP)
-#  IMean[1] <- rgamma(1,shape=pShape,rate=pShape/I[1])
-  pSI[1] <- (1-beta)^I[1]
-  IMean[1] <- I[1]*R
+  S[1] <- N0 - i0
+  R[1] <- N - N0
+  IMean[1] <- I[1]*R0*(S[1]/N0)
   Iobs[1] <- rpois(1,repMean*I[1])
   
   ## Generate the Unobserved process I, and observables:
   
   for (t in 2:n){
     I[t] <- rpois(1,IMean[t-1])
-    pSI[t] <- 1-(1-beta)^I[t]
-    IMean[t] <- I[t]*R
-#    IMean[t] <- rgamma(1,shape=pShape,rate=pShape/I[t])
+    S[t] <- S[t-1] - I[t]
+    R[t] <- R[t-1] + I[t-1]
+    IMean[t] <- I[t]*R0*(S[t]/N0)
     Iobs[t] <- rpois(1,repMean*I[t])
   }
   
-  data.frame(time=tvec, I, Iobs,IMean,pSI)
+  data.frame(time=tvec, S, I, R, Iobs,IMean)
   
 }
-
-print(aa <- simm(i0=10,seed=108,numobs=20))
