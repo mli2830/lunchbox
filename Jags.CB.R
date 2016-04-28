@@ -4,7 +4,7 @@ require(R2jags)
 mult <- 1:4
 data <- lme4:::namedList(obs=sim$Iobs,N,i0=5,numobs)
 
-iList <- lme4:::namedList(R0,effprop=0.9,N0,repMean=0.5
+iList <- lme4:::namedList(R0,effprop=0.9,N0,repMean=0.5,initDis=0.2
 )
 
 

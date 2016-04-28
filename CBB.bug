@@ -7,9 +7,9 @@ model{
 	R0 ~ dgamma(2,1)
 
 	## This one should probably be negative binomial
-	N0 ~ dbin(effprop,N)
-	
-	I[1] ~ dbin(0.5,i0)
+	N0 ~ dnegbin(effprop,N)
+	I[1] ~ dnegbin(initDis,i0)
+
 	S[1] <- N0 - I[1]
 	beta <- exp(-R0/N0)
   repobsa ~ dgamma(repobsSize/(1-repMean), 1)

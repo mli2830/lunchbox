@@ -8,7 +8,7 @@ data <- lme4:::namedList(obs=sim$Iobs,N,i0=6,numobs,pSISize=repSize,
 
 iList <- lme4:::namedList(
   pSIa=sim$pSI,effprop=0.7,R0,N0,repMean=0.5,
-  pSIb=sim$pSI, repobsa=repMean, repobsb=repMean
+  pSIb=sim$pSI, repobsa=repMean, repobsb=repMean, initDis=0.2
 )
 
 

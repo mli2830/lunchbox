@@ -1,6 +1,6 @@
 ##This is a Makefile
 
-target: Jags.CBB.fit.Rout
+target: B.B.Rout
 
 target pngtarget pdftarget vtarget acrtarget: Jags.fit.Rout 
 
@@ -15,8 +15,11 @@ sim.CP.Rout: simulate.CP.R
 sim.%.Rout: simulator.%.R parameters.CBB.R simulate.%.R
 	    $(run-R)
 
-Jags.CB.fit.Rout: CB.bug Jags.CB.R
-Jags.CBB.fit.Rout: CBB.bug Jags.CBB.R
+B.B.Rout: process.B.R observation.B.R bugs_template.R
+	  $(run-R)
+
+Jags.CB.fit.Rout: B.B.bug Jags.CB.R
+Jags.CBB.fit.Rout: CB.bug Jags.CBB.R
 Jags.CP.fit.Rout: CP.bug Jags.CP.R
 Jags.%.fit.Rout: sim.CBB.Rout parameters.CBB.R Jags.%.R
 	$(run-R)
