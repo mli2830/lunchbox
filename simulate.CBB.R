@@ -1,6 +1,6 @@
 ##simulate CBB data
 
-system.time(sim <- simm(lambda=lambda
+system.time(sim <- simm(R0=R0
   , N=N
   , effprop=effprop
   , i0=i0

@@ -7,7 +7,7 @@ data <- lme4:::namedList(obs=sim$Iobs,N,i0=6,numobs,pSISize=repSize,
 )
 
 iList <- lme4:::namedList(
-  pSIa=sim$pSI,effprop=0.7,lambda,N0,repMean=0.5,
+  pSIa=sim$pSI,effprop=0.7,R0,N0,repMean=0.5,
   pSIb=sim$pSI, repobsa=sim$pSI, repobsb=sim$pSI
 )
 
@@ -16,7 +16,7 @@ inits <- lapply (mult, function(m){
   return(c(iList, list(I = c(m+sim$Iobs,0))))
 })
 
-params <- c("lambda","effprop","repMean")
+params <- c("R0","effprop","repMean")
 
 print(inits)
 print(length(inits))
