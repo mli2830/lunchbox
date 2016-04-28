@@ -1,8 +1,8 @@
 ##This is a Makefile
 
-target: Jags.B.B.fit.Rout
+target: Jags.B.P.fit.Rout
 
-target pngtarget pdftarget vtarget acrtarget: Jags.B.B.fit.Rout
+target pngtarget pdftarget vtarget acrtarget: Jags.B.P.fit.Rout
 
 ##################################################################
 
@@ -15,16 +15,22 @@ sim.CP.Rout: simulate.CP.R
 sim.%.Rout: simulator.%.R parameters.CBB.R simulate.%.R
 	    $(run-R)
 
-B.B.Rout: process.B.R observation.B.R bugs_template.R
+B.%.Rout: process.B.R observation.%.R bugs_template.R
 	  $(run-R)
-BB.BB.Rout: process.BB.R observation.BB.R bugs_template.R
+BB.%.Rout: process.BB.R observation.%.R bugs_template.R
 	    $(run-R)
+P.%.Rout: process.P.R observation.%.R bugs_template.R
+	  $(run-R)
 
-Jags.CB.fit.Rout: B.B.bug Jags.CB.R
-Jags.CBB.fit.Rout: BB.BB.bug Jags.CBB.R
-Jags.CP.fit.Rout: CP.bug Jags.CP.R
 Jags.B.%.fit.Rout: sim.CBB.Rout B.%.Rout parameters.CBB.R B.%.bug Jags.Discrete.R
 	$(run-R)
+
+Jags.P.%.fit.Rout: sim.CBB.Rout P.%.Rout parameters.CBB.R P.%.bug Jags.Discrete.R
+		   $(run-R)
+
+Jags.BB.%.fit.Rout: sim.CBB.Rout BB.%.Rout parameters.CBB.R BB.%.bug Jags.Discrete.R
+		    $(run-R)
+
 
 Pymc.fit: PymcCB.py
 	python PymcCB.py
