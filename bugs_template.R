@@ -19,5 +19,5 @@ S <- ("
 
 
 (cat("model{",priors,S,process[2],observation[2],"}"
-    ,file=paste(process[1],observation[1],"bug",sep=".")
+    ,file=paste(process[1],observation[1],"buggen",sep=".")
 ))

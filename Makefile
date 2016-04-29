@@ -22,13 +22,13 @@ BB.%.Rout: process.BB.R observation.%.R bugs_template.R
 P.%.Rout: process.P.R observation.%.R bugs_template.R
 	  $(run-R)
 
-Jags.B.%.fit.Rout: sim.CBB.Rout B.%.Rout parameters.CBB.R B.%.bug Jags.Discrete.R
+Jags.B.%.fit.Rout: sim.CBB.Rout B.%.Rout parameters.CBB.R B.%.buggen Jags.Discrete.R
 	$(run-R)
 
-Jags.P.%.fit.Rout: sim.CBB.Rout P.%.Rout parameters.CBB.R P.%.bug Jags.Discrete.R
+Jags.P.%.fit.Rout: sim.CBB.Rout P.%.Rout parameters.CBB.R P.%.buggen Jags.Discrete.R
 		   $(run-R)
 
-Jags.BB.%.fit.Rout: sim.CBB.Rout BB.%.Rout parameters.CBB.R BB.%.bug Jags.Discrete.R
+Jags.BB.%.fit.Rout: sim.CBB.Rout BB.%.Rout parameters.CBB.R BB.%.buggen Jags.Discrete.R
 		    $(run-R)
 
 
