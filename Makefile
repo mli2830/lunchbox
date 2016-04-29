@@ -36,21 +36,11 @@ dis.jags.BB.%.fit.Rout: sim.CBB.Rout dis.BB.%.Rout parameters.CBB.R dis.BB.%.bug
 
 ## Hybrid
 
-hyb.B.%.Rout: hyb.process.B.R hyb.observation.%.R hyb.bugstemp.R
-	      $(run-R)
-hyb.BB.%.Rout: hyb.process.BB.R hyb.observation.%.R hyb.bugstemp.R
-	       $(run-R)
-hyb.P.%.Rout: hyb.process.P.R hyb.observation.%.R hyb.bugstemp.R
+hyb.%.P.Rout: hyb.process.%.R hyb.observation.P.R hyb.bugstemp.R
 	      $(run-R)
 
-hyb.jags.B.%.fit.Rout: sim.CBB.Rout hyb.B.%.Rout parameters.CBB.R hyb.B.%.buggen hyb.jags.R
-	$(run-R)
-
-hyb.jags.P.%.fit.Rout: sim.CBB.Rout hyb.P.%.Rout parameters.CBB.R hyb.P.%.buggen hyb.jags.R
-		   $(run-R)
-
-hyb.jags.BB.%.fit.Rout: sim.CBB.Rout hyb.BB.%.Rout parameters.CBB.R hyb.BB.%.buggen hyb.jags.R
-		    $(run-R)
+hyb.jags.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.buggen hyb.jags.R
+		       $(run-R)
 
 
 Pymc.fit: PymcCB.py
