@@ -10,14 +10,45 @@ priors <- ("
 	N0 ~ dnegbin(effprop,N)
 ")
 
-S <- ("
+S <- c("
   S[1] <- N0 - I[1]
-  for(t in 2:numobs){
+  "
+  ,"
     S[t] <- S[t-1] - I[t]
-  }
 ")
 
+iterloop <- c("for(t in 2:numobs){","}")
 
-(cat("model{",priors,S,process[2],observation[2],"}"
-    ,file=paste("dis",process[1],observation[1],"buggen",sep=".")
+nimstart <- ("
+  library(nimble)
+  nimcode <- nimbleCode({
+")
+
+## Jags bugs script
+(cat("model{"
+     , priors
+     , process[2]
+     , S[1]
+     , observation[2]
+     , iterloop[1]
+     , process[3]
+     , S[2]
+     , observation[3]
+     , iterloop[2]
+     , "}"
+    , file=paste("dis",process[1],observation[1],"buggen",sep=".")
 ))
+
+## nimble script
+(cat(nimstart
+     , priors
+     , process[2]
+     , S[1]
+     , observation[2]
+     , iterloop[1]
+     , process[3]
+     , S[2]
+     , observation[3]
+     , iterloop[2]
+     , "})"
+     , file=paste("dis",process[1],observation[1],"nimble.R",sep=".")))

@@ -16,7 +16,30 @@ S <- ("
   }
 ")
 
+nimstart <- ("
+  library(nimble)
+  nimcode <- nimbleCode({
+")
 
-(cat("model{",priors,S,process[2],observation[2],"}"
-    ,file=paste("hyb",process[1],observation[1],"buggen",sep=".")
+## Jags script
+(cat("model{"
+     , priors
+     , S
+     , process[2]
+     , observation[2]
+     , "}"
+    , file=paste("hyb",process[1],observation[1],"buggen",sep=".")
 ))
+
+
+## nimble script
+(cat(nimstart
+     , priors
+     , S
+     , process[2]
+     , observation[2]
+     , "})"
+     , file=paste("hyb",process[1],observation[1],"nimble.R",sep=".")))
+
+
+
