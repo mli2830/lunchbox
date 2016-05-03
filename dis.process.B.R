@@ -7,7 +7,7 @@ process <- c("B"
   , 
 #  "for(t in 2:numobs){
   "I[t] ~ dbin(pSI[t-1],S[t-1])
-  pSI[t] <- 1 - exp(I[t]*log(beta)
+  pSI[t] <- 1 - exp(I[t]*log(beta))
 "
 #  }"
 )
