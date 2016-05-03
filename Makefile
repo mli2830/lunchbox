@@ -12,6 +12,7 @@ include stuff.mk
 
 sim.CBB.Rout: simulate.CBB.R
 sim.CP.Rout: simulate.CP.R
+sim.NB.Rout: simulate.CNB.R
 sim.%.Rout: simulator.%.R parameters.CBB.R simulate.%.R
 	    $(run-R)
 
