@@ -31,13 +31,13 @@ simm <- function(R0=2,i0=1,t0=1, numobs=10, N=1000, effprop=0.9,
   ## Generate the Unobserved process I, and observables:
   
   for (t in 2:n){
-    I[t] <- rpois(1,IMean[t-1])
+    I[t] <- rnbinom(1,size=S[t-1],prob=pSI[t-1])
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]
-    IMean[t] <- I[t]*R0*(S[t]/N0)
-    Iobs[t] <- rpois(1,repMean*I[t])
+    pSI[t] <- 1 - (beta)^I[t]
+    Iobs[t] <- rnbinom(1,size=I[t],prob=repMean)
   }
   
-  data.frame(time=tvec, S, I, R, Iobs,IMean)
+  data.frame(time=tvec, S, I, R, Iobs,pSI)
   
 }

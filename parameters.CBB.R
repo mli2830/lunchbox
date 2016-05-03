@@ -1,7 +1,7 @@
 R0 <- 2
 N <- 10000
 i0 <- 1
-effprop <- 0.2
+effprop <- 0.9
 repMean <- 0.2
 repSize <- 5
 eps <-0.0001

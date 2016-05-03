@@ -1,6 +1,6 @@
 ##This is a Makefile
 
-target: jags.B.P.fit.Rout
+target: dis.nim.BB.BB.fit.Rout
 
 target pngtarget pdftarget vtarget acrtarget: jags.B.P.fit.Rout
 
@@ -23,6 +23,10 @@ dis.BB.%.Rout: dis.process.BB.R dis.observation.%.R dis.bugstemp.R
 	       $(run-R)
 dis.P.%.Rout: dis.process.P.R dis.observation.%.R dis.bugstemp.R
 	      $(run-R)
+dis.NB.%.Rout: dis.process.NB.R dis.observation.%.R dis.bugstemp.R
+	       $(run-R)
+
+
 
 dis.jags.B.%.fit.Rout: sim.CBB.Rout dis.B.%.Rout parameters.CBB.R dis.B.%.buggen dis.jags.R
 	$(run-R)
@@ -38,10 +42,16 @@ dis.nim.P.%.fit.Rout: sim.CBB.Rout dis.P.%.Rout parameters.CBB.R dis.P.%.nimble.
 
 
 dis.jags.BB.%.fit.Rout: sim.CBB.Rout dis.BB.%.Rout parameters.CBB.R dis.BB.%.buggen dis.jags.R
-		    $(run-R)
+			$(run-R)
 
 dis.nim.BB.%.fit.Rout: sim.CBB.Rout dis.BB.%.Rout parameters.CBB.R dis.BB.%.nimble.R dis.nimble.R
-		      $(run-R)
+		       $(run-R)
+
+dis.jags.NB.%.fit.Rout: sim.CBB.Rout dis.NB.%.Rout parameters.CBB.R dis.NB.%.buggen dis.jags.R
+			$(run-R)
+
+dis.nim.NB.%.fit.Rout: sim.CBB.Rout dis.NB.%.Rout parameters.CBB.R dis.NB.%.nimble.R dis.nimble.R
+		       $(run-R)
 
 
 ## Hybrid
