@@ -25,13 +25,13 @@ print(length(inits))
 
 # list.samplers(Jagsmod)
 
-JagsHybrid <- jags(data=data,
+system.time(JagsHybrid <- jags(data=data,
                      inits=inits,
                      param = params,
                      model.file = input_files[[1]],
                      n.iter = iterations,
                      n.chains = length(inits))
-
+)
 print(JagsHybrid)
 
 # rdsave(JagsHybrid)

@@ -25,12 +25,13 @@ print(length(inits))
 
 # list.samplers(Jagsmod)
 
-JagsDiscrete <- jags(data=data,
+system.time(JagsDiscrete <- jags(data=data,
                 inits=inits,
                 param = params,
                 model.file = input_files[[1]],
                 n.iter = iterations,
                 n.chains = length(inits))
+            )
 
 print(JagsDiscrete)
 
