@@ -51,16 +51,16 @@ dis.nim.BB.%.fit.Rout: sim.CBB.Rout dis.BB.%.Rout parameters.CBB.R dis.BB.%.nimb
 dis.jags.NB.%.fit.Rout: sim.CBB.Rout dis.NB.%.Rout parameters.CBB.R dis.NB.%.buggen discrete/jags.R
 			$(run-R)
 
-dis.nim.NB.%.fit.Rout: sim.CBB.Rout dis.NB.%.Rout parameters.CBB.R dis.NB.%.nimble.R dis.nimble.R
+dis.nim.NB.%.fit.Rout: sim.CBB.Rout dis.NB.%.Rout parameters.CBB.R dis.NB.%.nimble.R discrete/nimble.R
 		       $(run-R)
 
 
 ## Hybrid
 
-hyb.%.P.Rout: hyb.process.%.R hyb.observation.P.R hyb.bugstemp.R
+hyb.%.P.Rout: hybrid/process.%.R hybrid/observation.P.R hybrid/bugstemp.R
 	      $(run-R)
 
-hyb.jags.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.buggen hyb.jags.R
+hyb.jags.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.buggen hybrid/jags.R
 		       $(run-R)
 
 
