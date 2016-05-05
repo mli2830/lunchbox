@@ -1,0 +1,9 @@
+#!/bin/bash
+for PROC_DIST in BB B P NB; do
+   for OBS_DIST in BB B P NB; do
+      make dis.$PROC_DIST.$OBS_DIST.Rout
+      for PLATFORM in nim jags; do
+          make dis.$PLATFORM.$PROC_DIST.$OBS_DIST.fit.Rout
+	  done
+      done
+done
