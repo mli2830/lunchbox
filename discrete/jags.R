@@ -1,16 +1,30 @@
 require(R2jags)
 # options(mc.cores = parallel::detectCores())
 
+type <- unlist(strsplit(rtargetname,"[.]"))
+
 mult <- 1:4
-data <- lme4:::namedList(obs=sim$Iobs,N,i0=6,numobs,pSISize=repSize,
-                         repobsSize=repSize,eps
+data <- lme4:::namedList(obs=sim$Iobs
+  , N
+  , i0=6
+  , numobs
 )
 
-iList <- lme4:::namedList(
-  pSIa=sim$pSI,effprop=0.7,R0,N0,repMean=0.5,
-  pSIb=sim$pSI, repobsa=repMean, repobsb=repMean, initDis=0.2
+iList <- lme4:::namedList(effprop=0.7
+  , R0 = 1
+  , N0
+  , initDis=0.2
+  , repMean=0.5
 )
 
+if(type[2] == "BB"){
+  data <- c(data, lme4:::namedList(pSISize=repSize, eps))
+  iList <- c(iList, lme4:::namedList(pSIa=sim$pSI,pSIb=sim$pSI))
+}
+if(type[3] == "BB"){
+  data <- c(data, lme4:::namedList(repobsSize=repSize,eps))
+  iList <- c(iList, lme4:::namedList(repobsa=repMean, repobsb=repMean))
+}
 
 inits <- lapply (mult, function(m){
   return(c(iList, list(I = c(m+sim$Iobs))))

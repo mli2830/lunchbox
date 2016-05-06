@@ -1,16 +1,27 @@
 require(nimble)
+
+type <- unlist(strsplit(rtargetname,"[.]"))
+
 ##options(mc.cores = parallel::detectCores())
 nimbleOptions(verifyConjugatePosteriors=TRUE)
-nimCBdata <- lme4:::namedList(obs=sim$Iobs)
-nimCBcon <- lme4:::namedList(numobs,N,i0,pSISize=repSize,
-                             repobsSize=repSize,eps)
+nimdata <- lme4:::namedList(obs=sim$Iobs)
+nimcon <- lme4:::namedList(numobs
+  , N
+  , i0
+)
 
-nimCBinits <- lme4:::namedList(I=sim$I,effprop,R0,repMean,N0, 
-                               pSIa=sim$pSI,
-                               pSIb=sim$pSI, 
-#                                repobsa=repMean, 
-#                                repobsb=repMean, 
+niminits <- lme4:::namedList(I=sim$I,effprop,R0,repMean,N0, 
                                initDis=0.2)
+
+if(type[2] == "BB"){
+  nimcon <- c(nimcon, lme4:::namedList(pSISize=repSize, eps))
+  niminits <- c(niminits, lme4:::namedList(pSIa=sim$pSI,pSIb=sim$pSI))
+}
+
+if(type[3] == "BB"){
+  nimcon <- c(nimcon, lme4:::namedList(repobsSize=repSize,eps))
+  niminits <- c(niminits, lme4:::namedList(repobsa=repMean, repobsb=repMean))
+}
 
 params <- c("R0","effprop","repMean")
 
@@ -20,9 +31,9 @@ params <- c("R0","effprop","repMean")
 # 
 # # nimble is not picking up the conjugate beta priors for nimble
 NimbleCB <- MCMCsuite(code=nimcode,
-                      data=nimCBdata,
-                      inits=nimCBinits,
-                      constants=nimCBcon,
+                      data=nimdata,
+                      inits=niminits,
+                      constants=nimcon,
                       MCMCs=c("jags","nimble","nimble_slice"),
                       monitors=params,
                       calculateEfficiency=TRUE,
