@@ -1,13 +1,15 @@
 priors <- (" 
   repMean ~ dbeta(1,1)
-	effprop ~ dbeta(1,1)
+	effprop ~ dbeta(100,35)
 	initDis ~ dbeta(1,1)
+  Ndis ~ dgamma(1,1)
 	
 	## This may be a bad prior
-	R0 ~ dgamma(2,1)
+	R0 ~ dgamma(3,1)
 
 	## This one should probably be negative binomial
-	N0 ~ dnegbin(effprop,N)
+	Nmean ~ dgamma(Ndis,Ndis/effprop*N)
+  N0 ~ dpois(Nmean)
 ")
 
 S <- c("

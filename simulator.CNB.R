@@ -25,7 +25,7 @@ simm <- function(R0=2,i0=1,t0=1, numobs=10, N=1000, effprop=0.9,
   R[1] <- N - N0
   beta <- exp(-R0/N0)
   pSI[1] <- 1 - (beta)^I[1]
-  IMean[1] <- 0
+  IMean[1] <- 
   
   obsMean[1] <- rgamma(1,shape=k,scale=repMean*I[1]/k)
   Iobs[1] <- rpois(1,obsMean[1])
