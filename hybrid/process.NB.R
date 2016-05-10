@@ -9,5 +9,5 @@ process <- c("NB","
   "IMean[t] ~ dgamma(Pdis,Pdis/(pSI[t-1]*S[t-1] + eps))
   I[t] ~ dgamma(IMean[t],1)
   pSI[t] <- 1 - exp(I[t]*log(beta))
-}
+
 ")

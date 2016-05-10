@@ -25,7 +25,7 @@ iList <- lme4:::namedList(effprop=0.7
 # )
 
 if(type[3] == "BB"){
-  data <- c(data, lme4:::namedList(pSISize=repSize, eps))
+  data <- c(data, lme4:::namedList(pSISize=repSize))
   iList <- c(iList, lme4:::namedList(pSIa=sim$pSI,pSIb=sim$pSI))
 }
 
