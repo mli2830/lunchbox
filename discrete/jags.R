@@ -23,7 +23,7 @@ if(type[3] == "BB"){
 }
 
 if(type[3] == "NB"){
-  data <- c(data, lme4:::namedList(Pdis, eps))
+  data <- c(data, lme4:::namedList(Pdis,eps))
   iList <- c(iList, lme4:::namedList(IMean=sim$I))
 }
 
