@@ -1,10 +1,11 @@
 observation <- c("NB"
-                 , "
-  obs[1] ~ dnegbin(repMean,I[1])
+  , "
+  obsdis ~ dgamma(1,1)
+  obs[1] ~ dgamma(obsdis,repMean*
   "
-                 ,
-                 #  "for(t in 2:numobs){
-                 "obs[t] ~ dnegbin(repMean,I[t]) 
+  ,
+  #  "for(t in 2:numobs){
+  "obs[t] ~ dnegbin(repMean,I[t]) 
 "
-                 #}"
+#}"
 )

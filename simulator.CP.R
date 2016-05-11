@@ -1,4 +1,3 @@
-library(ggplot2)
 ##' @param beta prob. of adequate contact per infective
 ##' @param i0 initial infected
 ##' @param t0 initial time (unused)
@@ -22,7 +21,8 @@ simm <- function(R0=2,i0=1,t0=1, numobs=10, N=1000, effprop=0.9,
   I[1] <- i0
   S[1] <- N0 - i0
   R[1] <- N - N0
-  IMean[1] <- I[1]*R0*(S[1]/N0)
+  beta <- exp(-R0/N0)
+  IMean[1] <- (1-beta^I[1])*S[1]
   Iobs[1] <- rpois(1,repMean*I[1])
   
   ## Generate the Unobserved process I, and observables:
@@ -31,7 +31,7 @@ simm <- function(R0=2,i0=1,t0=1, numobs=10, N=1000, effprop=0.9,
     I[t] <- rpois(1,IMean[t-1])
     S[t] <- S[t-1] - I[t]
     R[t] <- R[t-1] + I[t-1]
-    IMean[t] <- I[t]*R0*(S[t]/N0)
+    IMean[t] <- (1-beta^I[t])*S[t]
     Iobs[t] <- rpois(1,repMean*I[t])
   }
   
