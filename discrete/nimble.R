@@ -13,13 +13,13 @@ nimcon <- lme4:::namedList(numobs
 niminits <- lme4:::namedList(I=sim$I,effprop,R0,repMean,N0, 
                                initDis=0.2)
 
-if(type[2] == "BB"){
+if(type[3] == "BB"){
   nimcon <- c(nimcon, lme4:::namedList(pSISize=repSize, eps))
   niminits <- c(niminits, lme4:::namedList(pSIa=sim$pSI,pSIb=sim$pSI))
 }
 
-if(type[3] == "BB"){
-  nimcon <- c(nimcon, lme4:::namedList(repobsSize=repSize,eps))
+if(type[4] == "BB"){
+  nimcon <- c(nimcon, lme4:::namedList(repobsSize=repSize))
   niminits <- c(niminits, lme4:::namedList(repobsa=repMean, repobsb=repMean))
 }
 
