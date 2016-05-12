@@ -66,6 +66,9 @@ hyb.jags.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.buggen
 hyb.nim.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.nimble.R hybrid/nimble.R
 		      $(run-R)
 
+clean:
+	rm *.nimble.R *.buggen *.wrapR.r
+
 
 Pymc.fit: PymcCB.py
 	python PymcCB.py
