@@ -5,7 +5,7 @@ priors <- ("
   Ndis ~ dgamma(1,1)
            
   ## This may be a bad prior
-  R0 ~ dgamma(3,1)
+  R0 ~ dunif(0,10)
            
   N0 ~ dgamma(N*effprop/(1-effprop),1/(1-effprop))
 ")
