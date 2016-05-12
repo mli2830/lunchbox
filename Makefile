@@ -63,6 +63,9 @@ hyb.%.P.Rout: hybrid/process.%.R hybrid/observation.P.R hybrid/bugstemp.R
 hyb.jags.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.buggen hybrid/jags.R
 		       $(run-R)
 
+hyb.nim.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.nimble.R hybrid/nimble.R
+		      $(run-R)
+
 
 Pymc.fit: PymcCB.py
 	python PymcCB.py
