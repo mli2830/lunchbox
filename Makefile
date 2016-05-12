@@ -67,7 +67,7 @@ hyb.nim.%.P.fit.Rout: sim.CBB.Rout hyb.%.P.Rout parameters.CBB.R hyb.%.P.nimble.
 		      $(run-R)
 
 clean:
-	rm *.nimble.R *.buggen *.wrapR.r
+	rm *.nimble.R *.buggen *.wrapR.r *.Rout
 
 
 Pymc.fit: PymcCB.py
