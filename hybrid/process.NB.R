@@ -2,7 +2,7 @@ process <- c("NB","
 	I[1] ~ dgamma(i0,1)
   beta <- exp(-R0/N0)
 	pSI[1] <- 1 - exp(I[1]*log(beta))
-  Pdis ~ dunif(0,10)
+  Pdis ~ dunif(0,100)
   "
   ,
 #  for(t in 2:numobs){
