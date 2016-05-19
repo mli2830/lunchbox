@@ -6,16 +6,18 @@ priors <- ("
            
   ## This may be a bad prior
   R0 ~ dunif(0,10)
-           
-  N0 ~ dgamma(N*effprop/(1-effprop),1/(1-effprop))
-")
+  Nmean ~ dgamma(Ndis,Ndis/effprop*N)
+  N0 ~ dpois(Nmean)
+  "
+)
 
 S <- c("
   S[1] <- N0 - I[1]
   "
-       ,"
+  , "
     S[t] <- S[t-1] - I[t]
-")
+"
+)
 
 iterloop <- c("for(t in 2:numobs){","}")
 
