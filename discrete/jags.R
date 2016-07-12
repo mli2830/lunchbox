@@ -42,4 +42,6 @@ system.time(JagsDiscrete <- jags(data=data
 
 print(JagsDiscrete)
 
+print(plot(JagsDiscrete))
+print(traceplot(JagsDiscrete))
 # rdsave(JagsDiscrete)
