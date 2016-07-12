@@ -8,7 +8,7 @@ eps <-0.0001
 initDis <- 0.1
 N0 <- round(N*effprop)
 numobs <- 15
-iterations=4000
+iterations=20000
 
 Ndis=2
 seed=1001
