@@ -1,26 +1,25 @@
 model{  
   repMean ~ dbeta(1,1)
-	effprop ~ dbeta(100,35)
-	initDis ~ dbeta(1,1)
+  effprop ~ dbeta(1,1)
+  initDis ~ dbeta(1,1)
   Ndis ~ dgamma(1,1)
 	
-	## This may be a bad prior
-	R0 ~ dgamma(3,1)
+  ## This may be a bad prior
+  R0 ~ dgamma(3,1)
 
-	## This one should probably be negative binomial
-	Nmean ~ dgamma(Ndis,Ndis/effprop*N)
+  ## This one should probably be negative binomial
+  Nmean ~ dgamma(Ndis,Ndis/effprop*N)
   N0 ~ dpois(Nmean)
- 
-	I[1] ~ dbin(initDis,i0)
+  I[1] ~ dbin(initDis,i0)
   beta <- exp(-R0/N0)
-	pSI[1] <- 1 - exp(I[1]*log(beta))
-   
+  pSI[1] <- 1 - exp(I[1]*log(beta))
   S[1] <- N0 - I[1]
-   
   obs[1] ~ dbin(repMean,I[1])
-   for(t in 2:numobs){ I[t] ~ dbin(pSI[t-1],S[t-1])
-  pSI[t] <- 1 - exp(I[t]*log(beta))
- 
+  
+  for(t in 2:numobs){ 
+    I[t] ~ dbin(pSI[t-1],S[t-1])
+    pSI[t] <- 1 - exp(I[t]*log(beta))
     S[t] <- S[t-1] - I[t]
- obs[t] ~ dbin(repMean,I[t]) 
- } }
+    obs[t] ~ dbin(repMean,I[t]) 
+    } 
+}
