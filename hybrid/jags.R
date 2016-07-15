@@ -9,13 +9,10 @@ data <- lme4:::namedList(obs=sim$Iobs
   , i0=6
   , numobs
 )
-# data <- lme4:::namedList(obs=sim$Iobs,N,i0=6,numobs,pSISize=repSize,
-#                          repobsSize=repSize,eps
-# )
-iList <- lme4:::namedList(effprop=0.7
-  , R0=1
+iList <- lme4:::namedList(effprop
+  , R0
   , N0
-  , repMean=0.5
+  , repMean
 )
 
 inits <- lapply (mult, function(m){
