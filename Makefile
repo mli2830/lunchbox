@@ -16,16 +16,13 @@ sim.%.Rout: simulators/simulator.%.R parameters.CBB.R simulators/simulate.%.R
 
 ## Discrete
 
-dis.jags.B.B.fit.Rout: sim.CB.Rout parameters.CBB.R dis.B.B.buggen discrete/jags.R
+dis.jags.fit.Rout: sim.CB.Rout parameters.CBB.R dis.B.B.buggen discrete/jags.R
 	$(run-R)
 
 
 ## Hybrid
 
-hyb.%.P.Rout: hybrid/process.%.R hybrid/observation.P.R hybrid/bugstemp.R
-	$(run-R)
-
-hyb.jags.B.P.Rout: sim.CB.Rout parameters.CBB.R hyb.B.P.buggen hybrid/jags.R
+hyb.jags.fit.Rout: sim.CB.Rout parameters.CBB.R hyb.B.P.buggen hybrid/jags.R
 	$(run-R)
 
 clean:
