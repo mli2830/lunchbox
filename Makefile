@@ -1,8 +1,8 @@
 ##This is a Makefile
 
-target: dis.jags.B.B.fit.Rout
+current: target
 
-target pngtarget pdftarget vtarget acrtarget: dis.jags.B.B.fit.Rout
+target pngtarget pdftarget vtarget acrtarget: dis.jags.fit.Rout
 
 ##################################################################
 
