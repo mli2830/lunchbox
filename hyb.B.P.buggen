@@ -1,0 +1,29 @@
+model{  
+  repMean ~ dbeta(1,1)
+  effprop ~ dbeta(100,35)
+  initDis ~ dbeta(1,1)
+  Ndis ~ dgamma(1,1)
+           
+  ## This may be a bad prior
+  R0 ~ dunif(0,10)
+  Nmean ~ dgamma(Ndis,Ndis/effprop*N)
+  N0 ~ dpois(Nmean)
+   
+  I[1] ~ dgamma(i0,1)
+  beta <- exp(-R0/N0)
+  pSI[1] <- 1 - exp(I[1]*log(beta))
+   
+  S[1] <- N0 - I[1]
+   
+  obs[1] ~ dpois(I[1]*repMean)
+  for(t in 2:numobs){ 
+    SIGrate[t] <- 1/(1-pSI[t-1])
+    SIGshape[t] <- pSI[t-1]*S[t-1]*SIGrate[t]
+    I[t] ~ dgamma(SIGshape[t],SIGrate[t])
+    pSI[t] <- 1 - exp(I[t]*log(beta))
+
+ 
+    S[t] <- S[t-1] - I[t]
+    obs[t] ~ dpois(I[t]*repMean)
+   } 
+}

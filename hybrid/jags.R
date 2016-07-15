@@ -18,27 +18,6 @@ iList <- lme4:::namedList(effprop=0.7
   , repMean=0.5
 )
 
-# iList <- lme4:::namedList(
-#   pSIa=sim$pSI,effprop=0.7,R0,N0,repMean=0.5,
-#   pSIb=sim$pSI, repobsa=repMean, repobsb=repMean, initDis=0.2
-# )
-# 
-# if(type[3] == "BB"){
-#   data <- c(data, lme4:::namedList(pSISize=repSize))
-#   iList <- c(iList, lme4:::namedList(pSIa=sim$pSI,pSIb=sim$pSI))
-# }
-
-if(type[3] == "NB"){
-  data <- c(data, lme4:::namedList(Pdis, eps))
-  iList <- c(iList, lme4:::namedList(IMean=sim$I))
-}
-# 
-# if(type[4] == "BB"){
-#   data <- c(data, lme4:::namedList(repobsSize=repSize))
-#   iList <- c(iList, lme4:::namedList(repobsa=repMean, repobsb=repMean))
-# }
-
-
 inits <- lapply (mult, function(m){
   return(c(iList, list(I = c(m+sim$Iobs))))
 })
