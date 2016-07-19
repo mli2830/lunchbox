@@ -1,12 +1,12 @@
 model{  
 	# Don't call it repMean in the Poisson model 
 	# (it's not a mean, it's the fixed reporting proportion)
-	repProp ~ dbeta(1,1)
-	effProp ~ dbeta(1,1)
+	repMean ~ dbeta(1,1)
+	effprop ~ dbeta(1,1)
 
 	## Change this or I will cry the next time I see it!!!
 	R0 ~ dunif(0,10)
-	Neff <- effProp*N
+	Neff <- effprop*N
 
 	I[1] ~ dgamma(i0,1)
 	beta <- R0/Neff
@@ -22,6 +22,6 @@ model{
 
 	for(t in 1:numobs){ 
 		pSI[t] <- 1 - exp(-I[t]*beta)
-		obs[t] ~ dpois(I[t]*repProp)
+		obs[t] ~ dpois(I[t]*repMean)
 	} 
 }
