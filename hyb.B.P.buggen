@@ -8,13 +8,13 @@ model{
   R0 ~ dunif(0,10)
   # Nmean ~ dgamma(Ndis,Ndis/(effprop*N))
   # N0 ~ dpois(Nmean)
-  Neff ~ dgamma(Ndis,Ndis/(effprop*N)) ## This line in progress
+  Neff <- effprop*N
    
   I[1] ~ dgamma(i0,1)
-  beta <- R0/N0
+  beta <- R0/Neff
   pSI[1] <- 1 - exp(-I[1]*beta)
    
-  S[1] <- N0 - I[1]
+  S[1] <- Neff - I[1]
    
   obs[1] ~ dpois(I[1]*repMean)
   for(t in 2:numobs){ 
