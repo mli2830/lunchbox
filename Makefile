@@ -2,7 +2,7 @@
 
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: dis.jags.fit.Rout
+target pngtarget pdftarget vtarget acrtarget: hyb.jags.plot.Rout 
 
 ##################################################################
 
@@ -19,15 +19,18 @@ sim.%.Rout: simulators/simulator.%.R parameters.CBB.R simulators/simulate.%.R
 dis.jags.fit.Rout: sim.CB.Rout parameters.CBB.R dis.B.B.buggen discrete/jags.R
 	$(run-R)
 
-
 ## Hybrid
 
 hyb.jags.fit.Rout: sim.CB.Rout parameters.CBB.R hyb.B.P.buggen hybrid/jags.R
 	$(run-R)
 
+hyb.jags.plot.Rout: hyb.jags.fit.Rout jagsplot.R
+	$(run-R)
+
+
+
 clean:
 	rm *.nimble.R *.buggen *.wrapR.r *.Rout
-
 
 Pymc.fit: PymcCB.py
 	python PymcCB.py
