@@ -1,16 +1,18 @@
 model{  
   repMean ~ dbeta(1,1)
   effprop ~ dbeta(1,1)
-  Ndis ~ dgamma(1,1)
+  # Ndis ~ dgamma(1,1)
            
-  ## This may be a bad prior
+  ## This may be a bad prior (duh!)
+  ## Change this or I will cry the next time I see it!!!
   R0 ~ dunif(0,10)
-  Nmean ~ dgamma(Ndis,Ndis/effprop*N)
-  N0 ~ dpois(Nmean)
+  # Nmean ~ dgamma(Ndis,Ndis/(effprop*N))
+  # N0 ~ dpois(Nmean)
+  Neff ~ dgamma(Ndis,Ndis/(effprop*N)) ## This line in progress
    
   I[1] ~ dgamma(i0,1)
-  beta <- exp(-R0/N0)
-  pSI[1] <- 1 - exp(I[1]*log(beta))
+  beta <- R0/N0
+  pSI[1] <- 1 - exp(-I[1]*beta)
    
   S[1] <- N0 - I[1]
    
@@ -19,8 +21,7 @@ model{
     SIGrate[t] <- 1/(1-pSI[t-1])
     SIGshape[t] <- pSI[t-1]*S[t-1]*SIGrate[t]
     I[t] ~ dgamma(SIGshape[t],SIGrate[t])
-    pSI[t] <- 1 - exp(I[t]*log(beta))
-
+    pSI[t] <- 1 - exp(-I[t]*beta)
  
     S[t] <- S[t-1] - I[t]
     obs[t] ~ dpois(I[t]*repMean)

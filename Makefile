@@ -21,6 +21,9 @@ dis.jags.fit.Rout: sim.CB.Rout parameters.CBB.R dis.B.B.buggen discrete/jags.R
 
 ## Hybrid
 
+# Mike, do you need to fix this flow?
+Sources += hyb.B.P.buggen
+
 hyb.jags.fit.Rout: sim.CB.Rout parameters.CBB.R hyb.B.P.buggen hybrid/jags.R
 	$(run-R)
 
