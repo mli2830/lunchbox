@@ -8,20 +8,20 @@ model{
 	R0 ~ dunif(0,10)
 	Neff <- effprop*N
 
-	I[1] ~ dgamma(i0,1)
+	Ihat[1] ~ dgamma(i0,1/repMean)
 	beta <- R0/Neff
 
-	S[1] <- Neff - I[1]
+	Shat[1] <- Neff*repMean - Ihat[1]
 
 	for(t in 2:numobs){ 
-		S[t] <- S[t-1] - I[t]
+		Shat[t] <- Shat[t-1] - Ihat[t]
 		SIGrate[t] <- 1/(1-pSI[t-1])
-		SIGshape[t] <- pSI[t-1]*S[t-1]*SIGrate[t]
-		I[t] ~ dgamma(SIGshape[t],SIGrate[t])
+		SIGshape[t] <- pSI[t-1]*SIGrate[t]*(Shat[t-1]/repMean)
+		Ihat[t] ~ dgamma(SIGshape[t],SIGrate[t])
 	} 
 
 	for(t in 1:numobs){ 
-		pSI[t] <- 1 - exp(-I[t]*beta)
-		obs[t] ~ dpois(I[t]*repMean)
+		pSI[t] <- 1 - exp(-Ihat[t]*beta)
+		obs[t] ~ dpois(Ihat[t])
 	} 
 }
