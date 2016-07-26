@@ -1,27 +1,29 @@
 model{  
 	# Don't call it repMean in the Poisson model 
 	# (it's not a mean, it's the fixed reporting proportion)
-	repMean ~ dbeta(1,1)
+	repprop ~ dbeta(1,1)
 	effprop ~ dbeta(1,1)
+	repShape ~ dgamma(1,1)
 
 	## Change this or I will cry the next time I see it!!!
-	R0 ~ dunif(0,10)
+	R0 ~ dunif(0,5)
 	Neff <- effprop*N
 
-	Ihat[1] ~ dgamma(i0,1/repMean)
+	Ihat[1] ~ dgamma(i0,1/repprop)
 	beta <- R0/Neff
 
-	Shat[1] <- Neff*repMean - Ihat[1]
+	Shat[1] <- Neff*repprop - Ihat[1]
 
 	for(t in 2:numobs){ 
 		Shat[t] <- Shat[t-1] - Ihat[t]
 		SIGrate[t] <- 1/(1-pSI[t-1])
-		SIGshape[t] <- pSI[t-1]*SIGrate[t]*(Shat[t-1]/repMean)
+		SIGshape[t] <- pSI[t-1]*SIGrate[t]*(Shat[t-1]/repprop)
 		Ihat[t] ~ dgamma(SIGshape[t],SIGrate[t])
 	} 
 
 	for(t in 1:numobs){ 
 		pSI[t] <- 1 - exp(-Ihat[t]*beta)
-		obs[t] ~ dpois(Ihat[t])
+		obsMean[t] ~ dgamma(repShape, repShape/Ihat[t])
+		obs[t] ~ dpois(obsMean[t])
 	} 
 }

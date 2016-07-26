@@ -19,7 +19,7 @@ inits <- lapply (mult, function(m){
   return(c(iList, list(I = c(m+sim$Iobs))))
 })
 
-params <- c("R0","effprop","repMean")
+params <- c("R0","effprop","repprop")
 
 print(inits)
 print(length(inits))
