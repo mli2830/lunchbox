@@ -1,5 +1,5 @@
-##' Basic chain binomial simulator
-## Reed-Frost
+##' Basic chain beta-binomial simulator
+## Reed-Frost 
 ## e.g. see http://depts.washington.edu/sismid09/software/Module_7/reedfrost.R
 ## or the somewhat lame Wikipedia page
 

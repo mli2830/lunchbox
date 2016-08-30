@@ -2,7 +2,7 @@
 
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: hyb.jags.plot.Rout 
+target pngtarget pdftarget vtarget acrtarget: sim.CBB.1.Rout 
 
 ##################################################################
 
@@ -10,9 +10,12 @@ Sources += Makefile stuff.mk
 include stuff.mk
 -include $(ms)/git.def
 
-sim.CB.Rout: simulators/simulate.CB.R
-sim.%.Rout: simulators/simulator.%.R parameters.CBB.R simulators/simulate.%.R
+sim.%.Rout: simulators/simulator.CBB.R parameters.CBB.R name.R simulators/simulate.CBB.R
 	$(run-R)
+
+fit.%.Rout: sim.%.Rout name.R parameters.CBB.R process.R fit.R
+	$(run-R)
+
 
 ## Discrete
 
