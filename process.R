@@ -17,13 +17,13 @@ if(process == "b"){
   }
   if(type == "hyb"){
     process_code <- c("
-      I[1] ~ dgamma(i0,1/repMean)
+      I[1] ~ dgamma(i0,1/repprop)
       beta <- R0/N0
       pSI[1] <- 1 - exp(-I[1]*beta)
       "
       ,"
       SIGrate[t] <- 1/(1-pSI[t-1])
-      SIGshape[t] <- pSI[t-1]*S[t-1]*SIGrate[t]/repMean
+      SIGshape[t] <- pSI[t-1]*S[t-1]*SIGrate[t]/repprop
       I[t] ~ dgamma(SIGshape[t],SIGrate[t])
       pSI[t] <- 1 - exp(-I[t]*beta)
       "
@@ -44,12 +44,12 @@ if(process == "bb"){
     )
   }
   if(type == "hyb"){
-    process_code <- c("I[1] ~ dgamma(i0,1/repMean)
+    process_code <- c("I[1] ~ dgamma(i0,1/repprop)
                       beta <- R0/N0
                       pSI[1] <- 1 - exp(-I[1]*beta)
                       "
       ,"SIGrate[t] <- 1/(1-pSI[t-1])
-      SIGshape[t] <- pSI[t-1]*S[t-1]*SIGrate[t]/repMean
+      SIGshape[t] <- pSI[t-1]*S[t-1]*SIGrate[t]/repprop
       I[t] ~ dgamma(SIGshape[t],SIGrate[t])
       pSI[t] <- 1 - exp(-I[t]*beta)
       "

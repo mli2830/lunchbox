@@ -1,6 +1,6 @@
 priors <- c("
       #prior
-      repMean ~ dbeta(1,1)
+      repprop ~ dbeta(1,1)
       effprop ~ dbeta(1,1)
       initDis ~ dbeta(1,1)
             
@@ -15,6 +15,14 @@ S <- c("
       ,"
       S[t] <- S[t-1] - I[t]
       ")
+if(type=="hyb"){
+  S <- c("
+      S[1] <- N0*repprop - I[1]
+      "
+         ,"
+      S[t] <- S[t-1] - I[t]
+      ")
+}
 
 iterloop <- c("
       for(t in 2:numobs){"

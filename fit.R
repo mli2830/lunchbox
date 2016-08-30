@@ -11,11 +11,11 @@ nimcon <- lme4:::namedList(numobs
                            , i0
 )
 
-niminits <- lme4:::namedList(I=sim$I,effprop,R0,repMean,N0, 
+niminits <- lme4:::namedList(I=sim$I,effprop,R0,repprop,N0, 
                              initDis=initDis)
 
 
-params <- c("R0","effprop","repMean")
+params <- c("R0","effprop","repprop")
 
 # nimmod <- nimbleModel(code=nimcode,constants=nimcon, data=nimdata,
 #                       inits=niminits)
