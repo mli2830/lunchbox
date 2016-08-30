@@ -6,12 +6,12 @@ if(process == "b"){
   if(type == "dis"){
     process_code <- c("
       I[1] ~ dbin(1,i0)
-      beta <- exp(-R0/N0)
-	    pSI[1] <- 1 - beta
+      beta <- R0/N0
+	    pSI[1] <- 1 - exp(-I[1]*beta)
       "
       ,"
       I[t] ~ dbin(pSI[t-1],S[t-1])
-      pSI[t] <- 1 - exp(I[t]*log(beta))
+      pSI[t] <- 1 - exp(-I[t]*beta)
       "
     )
   }

@@ -7,4 +7,6 @@ if(observation == "b"){
       obs[t] ~ dbin(repMean,I[t])"
       )
 }
+
+
   
