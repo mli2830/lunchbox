@@ -9,11 +9,10 @@ nimdata <- lme4:::namedList(obs=sim$Iobs)
 nimcon <- lme4:::namedList(numobs
                            , N
                            , i0
-                           , eps
 )
 
 niminits <- lme4:::namedList(I=sim$I,effprop,R0,repMean,N0, 
-                             initDis=initDis, Ndis=Ndis, Nmean=1)
+                             initDis=initDis)
 
 
 params <- c("R0","effprop","repMean")
@@ -24,7 +23,7 @@ params <- c("R0","effprop","repMean")
 # 
 # nimble is not picking up the conjugate beta priors for nimble
 
-source(input_files)
+source(paste(rtargetname,".nimcode",sep=""))
 
 FitModel <- MCMCsuite(code=nimcode,
                       data=nimdata,
