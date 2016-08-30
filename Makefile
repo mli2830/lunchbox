@@ -2,7 +2,7 @@
 
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: sim.CBB.1.Rout 
+target pngtarget pdftarget vtarget acrtarget: fit.dis.b.b.1.100.Rout 
 
 ##################################################################
 
@@ -13,7 +13,7 @@ include stuff.mk
 sim.%.Rout: simulators/simulator.CBB.R parameters.CBB.R name.R simulators/simulate.CBB.R
 	$(run-R)
 
-fit.%.Rout: sim.%.Rout name.R parameters.CBB.R process.R fit.R
+fit.%.Rout: sim.%.Rout name.R parameters.CBB.R process.R observations.R nimbletemp.R fit.%.nimcode fit.R
 	$(run-R)
 
 
