@@ -8,5 +8,11 @@ if(observation == "b"){
       )
 }
 
+if(observation == "p"){
+  observation_code <- c("
+      obs[1] ~ dpois(I[1])"
+      , "
+      obs[t] ~ dpois(I[t])")
+}
 
-  
+
